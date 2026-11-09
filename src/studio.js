@@ -1,4 +1,4 @@
-var we=t=>document.getElementById(t),HG=Object.freeze({mjs:"./onnxruntime/ort-wasm-simd-threaded.js",wasm:"./onnxruntime/ort-wasm-simd-threaded.wasm"}),UG=Object.freeze({mjs:"./onnxruntime/ort-wasm-simd-threaded.asyncify.mjs",wasm:"./onnxruntime/ort-wasm-simd-threaded.asyncify.wasm"}),ad=new Map;function LG(t){if(!t||t===0)return"0 B";let e=1024,r=["B","KB","MB","GB"],n=Math.floor(Math.log(t)/Math.log(e));return parseFloat((t/Math.pow(e,n)).toFixed(1))+" "+r[n]}function lc(t){if(!Number.isFinite(t)||t<=0)return"0:00";let e=Math.floor(t/60),r=Math.floor(t%60);return`${e}:${r.toString().padStart(2,"0")}`}var _e={file:null,originalUrl:null,processedUrl:null,metadata:null,detection:null,running:!1,jobId:0,syncingPlayback:!1,currentTaskId:null},U={tabBatchBtn:we("tabBatchBtn"),tabSingleBtn:we("tabSingleBtn"),batchView:we("batchView"),singleView:we("singleView"),queueCountBadge:we("queueCountBadge"),statTotal:we("statTotal"),statProcessing:we("statProcessing"),statCompleted:we("statCompleted"),statOverallProgress:we("statOverallProgress"),startAllBtn:we("startAllBtn"),pauseAllBtn:we("pauseAllBtn"),downloadAllZipBtn:we("downloadAllZipBtn"),clearCompletedBtn:we("clearCompletedBtn"),clearAllBtn:we("clearAllBtn"),queueList:we("queueList"),queueEmpty:we("queueEmpty"),concurrencySelect:we("concurrencySelect"),concurrencyLabel:we("concurrencyLabel"),batchDenoiseBackend:we("batchDenoiseBackend"),batchBitrate:we("batchBitrate"),selectOutDirBtn:we("selectOutDirBtn"),openFolderBtn:we("openFolderBtn"),clearOutDirBtn:we("clearOutDirBtn"),selectedOutDirLabel:we("selectedOutDirLabel"),autoDownloadCheck:we("autoDownloadCheck"),batchAdaptiveAlphaCheck:we("batchAdaptiveAlphaCheck"),batchAllowLowConfidenceCheck:we("batchAllowLowConfidenceCheck"),batchScaleSelect:we("batchScaleSelect"),batchImageFormat:we("batchImageFormat"),batchQualityBadge:we("batchQualityBadge"),batchQualityRange:we("batchQualityRange"),batchQualityVal:we("batchQualityVal"),qualitySliderGroup:we("qualitySliderGroup"),stampEnableCheck:we("stampEnableCheck"),stampSettingsContainer:we("stampSettingsContainer"),stampTypeSelect:we("stampTypeSelect"),stampTextGroup:we("stampTextGroup"),stampTextInput:we("stampTextInput"),stampImageGroup:we("stampImageGroup"),stampLogoInput:we("stampLogoInput"),stampLogoPreview:we("stampLogoPreview"),stampPositionSelect:we("stampPositionSelect"),stampSizeSelect:we("stampSizeSelect"),stampOpacityRange:we("stampOpacityRange"),stampOpacityVal:we("stampOpacityVal"),dropzone:we("dropzone"),fileInput:we("fileInput"),comparePlayer:we("comparePlayer"),afterBadge:we("afterBadge"),playPauseBtn:we("playPauseBtn"),scrubber:we("scrubber"),timeLabel:we("timeLabel"),originalVideo:we("originalVideo"),processedVideo:we("processedVideo"),originalImg:we("originalImg"),processedImg:we("processedImg"),selectionCanvas:we("selectionCanvas"),toggleBoxBtn:we("toggleBoxBtn"),boxStatusText:we("boxStatusText"),originalPane:we("originalPane"),singleFileSelect:we("singleFileSelect"),singleFileCount:we("singleFileCount"),prevFileBtn:we("prevFileBtn"),nextFileBtn:we("nextFileBtn"),singleFilePills:we("singleFilePills"),originalEmpty:we("originalEmpty"),processedEmpty:we("processedEmpty"),metadata:we("metadata"),detection:we("detection"),progressBar:we("progressBar"),progressText:we("progressText"),status:we("status"),alphaGain:we("alphaGain"),alphaGainValue:we("alphaGainValue"),adaptiveAlpha:we("adaptiveAlpha"),highQualityCleanup:we("highQualityCleanup"),denoiseBackend:we("denoiseBackend"),edgeDenoiseStrength:we("edgeDenoiseStrength"),edgeDenoiseStrengthValue:we("edgeDenoiseStrengthValue"),residualCleanup:we("residualCleanup"),residualCleanupValue:we("residualCleanupValue"),videoBitrateMbps:we("videoBitrateMbps"),sampleCount:we("sampleCount"),allowLowConfidence:we("allowLowConfidence"),autoPresetSummary:we("autoPresetSummary"),processBtn:we("processBtn"),detectBtn:we("detectBtn"),downloadBtn:we("downloadBtn"),resetBtn:we("resetBtn"),relocatedReviewPresetBtn:we("relocatedReviewPresetBtn")};function wr(t,e="info"){U.status&&(U.status.textContent=t||"",U.status.dataset.tone=e)}async function T_({ backend = 'wasm', detection = null } = {}) {
+var we=t=>document.getElementById(t),HG=Object.freeze({mjs:"./onnxruntime/ort-wasm-simd-threaded.js",wasm:"./onnxruntime/ort-wasm-simd-threaded.wasm"}),UG=Object.freeze({mjs:"./onnxruntime/ort-wasm-simd-threaded.asyncify.mjs",wasm:"./onnxruntime/ort-wasm-simd-threaded.asyncify.wasm"}),ad=new Map;function LG(t){if(!t||t===0)return"0 B";let e=1024,r=["B","KB","MB","GB"],n=Math.floor(Math.log(t)/Math.log(e));return parseFloat((t/Math.pow(e,n)).toFixed(1))+" "+r[n]}function lc(t){if(!Number.isFinite(t)||t<=0)return"0:00";let e=Math.floor(t/60),r=Math.floor(t%60);return`${e}:${r.toString().padStart(2,"0")}`}var _e={file:null,originalUrl:null,processedUrl:null,metadata:null,detection:null,running:!1,jobId:0,syncingPlayback:!1,currentTaskId:null},U={tabBatchBtn:we("tabBatchBtn"),tabSingleBtn:we("tabSingleBtn"),batchView:we("batchView"),singleView:we("singleView"),queueCountBadge:we("queueCountBadge"),statTotal:we("statTotal"),statProcessing:we("statProcessing"),statCompleted:we("statCompleted"),statOverallProgress:we("statOverallProgress"),startAllBtn:we("startAllBtn"),pauseAllBtn:we("pauseAllBtn"),downloadAllZipBtn:we("downloadAllZipBtn"),clearCompletedBtn:we("clearCompletedBtn"),clearAllBtn:we("clearAllBtn"),queueList:we("queueList"),queueEmpty:we("queueEmpty"),concurrencySelect:we("concurrencySelect"),concurrencyLabel:we("concurrencyLabel"),batchDenoiseBackend:we("batchDenoiseBackend"),batchBitrate:we("batchBitrate"),selectOutDirBtn:we("selectOutDirBtn"),openFolderBtn:we("openFolderBtn"),clearOutDirBtn:we("clearOutDirBtn"),selectedOutDirLabel:we("selectedOutDirLabel"),autoDownloadCheck:we("autoDownloadCheck"),batchAdaptiveAlphaCheck:we("batchAdaptiveAlphaCheck"),batchAllowLowConfidenceCheck:we("batchAllowLowConfidenceCheck"),batchScaleSelect:we("batchScaleSelect"),batchImageFormat:we("batchImageFormat"),batchQualityBadge:we("batchQualityBadge"),batchQualityRange:we("batchQualityRange"),batchQualityVal:we("batchQualityVal"),qualitySliderGroup:we("qualitySliderGroup"),stampEnableCheck:we("stampEnableCheck"),stampSettingsContainer:we("stampSettingsContainer"),stampTypeSelect:we("stampTypeSelect"),stampTextGroup:we("stampTextGroup"),stampTextInput:we("stampTextInput"),stampImageGroup:we("stampImageGroup"),stampLogoInput:we("stampLogoInput"),stampLogoPreview:we("stampLogoPreview"),stampPositionSelect:we("stampPositionSelect"),stampSizeSelect:we("stampSizeSelect"),stampOpacityRange:we("stampOpacityRange"),stampOpacityVal:we("stampOpacityVal"),dropzone:we("dropzone"),fileInput:we("fileInput"),comparePlayer:we("comparePlayer"),afterBadge:we("afterBadge"),playPauseBtn:we("playPauseBtn"),scrubber:we("scrubber"),timeLabel:we("timeLabel"),originalVideo:we("originalVideo"),processedVideo:we("processedVideo"),originalImg:we("originalImg"),processedImg:we("processedImg"),selectionCanvas:we("selectionCanvas"),toggleBoxBtn:we("toggleBoxBtn"),boxStatusText:we("boxStatusText"),originalPane:we("originalPane"),singleFileSelect:we("singleFileSelect"),singleFileCount:we("singleFileCount"),prevFileBtn:we("prevFileBtn"),nextFileBtn:we("nextFileBtn"),singleFilePills:we("singleFilePills"),originalEmpty:we("originalEmpty"),processedEmpty:we("processedEmpty"),metadata:we("metadata"),detection:we("detection"),progressBar:we("progressBar"),progressText:we("progressText"),status:we("status"),alphaGain:we("alphaGain"),alphaGainValue:we("alphaGainValue"),adaptiveAlpha:we("adaptiveAlpha"),highQualityCleanup:we("highQualityCleanup"),denoiseBackend:we("denoiseBackend"),edgeDenoiseStrength:we("edgeDenoiseStrength"),edgeDenoiseStrengthValue:we("edgeDenoiseStrengthValue"),residualCleanup:we("residualCleanup"),residualCleanupValue:we("residualCleanupValue"),videoBitrateMbps:we("videoBitrateMbps"),sampleCount:we("sampleCount"),allowLowConfidence:we("allowLowConfidence"),autoPresetSummary:we("autoPresetSummary"),processBtn:we("processBtn"),detectBtn:we("detectBtn"),downloadBtn:we("downloadBtn"),resetBtn:we("resetBtn"),relocatedReviewPresetBtn:we("relocatedReviewPresetBtn"),modeSplitBtn:we("modeSplitBtn"),modeSideBtn:we("modeSideBtn"),modeHoldBtn:we("modeHoldBtn"),splitDivider:we("splitDivider"),processedPane:we("processedPane"),compareModeHint:we("compareModeHint"),toastContainer:we("toastContainer"),hotkeysModal:we("hotkeysModal"),openHotkeysBtn:we("openHotkeysBtn"),closeHotkeysBtn:we("closeHotkeysBtn")};function wr(t,e="info"){U.status&&(U.status.textContent=t||"",U.status.dataset.tone=e)}async function T_({ backend = 'wasm', detection = null } = {}) {
     const profile = Il(detection?.position);
     const key = `${backend}:${profile.id}`;
     if (!ad.has(key)) {
@@ -681,6 +681,7 @@ async function inspectTask(task) {
             U.downloadBtn.removeAttribute("href");
         }
     }
+    if (typeof updateSplitPos === 'function') updateSplitPos(_splitPos);
     updateSingleFileSwitcher();
 }
 
@@ -1172,6 +1173,8 @@ U.processBtn?.addEventListener("click", async () => {
             }
             U.processedEmpty.hidden = true;
             U.afterBadge.hidden = false;
+            if (typeof updateSplitPos === 'function') updateSplitPos(_splitPos);
+            showToast('✓ Đã xử lý & xoá watermark thành công!', 'success');
             U.downloadBtn.removeAttribute("aria-disabled");
             U.downloadBtn.href = _e.processedUrl;
             let ext = isImg ? (result.format || (result.blob?.type === 'image/webp' ? 'webp' : result.blob?.type === 'image/jpeg' ? 'jpg' : 'png')) : "mp4";
@@ -1288,6 +1291,253 @@ function setupCustomBrandingAndExportControls() {
 }
 setupSmartBoxDrawing();
 setupCustomBrandingAndExportControls();
+
+// --- TOAST NOTIFICATION SYSTEM ---
+function showToast(text, type = 'info') {
+    let container = U.toastContainer || document.getElementById('toastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+        U.toastContainer = container;
+    }
+    let toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    let icon = type === 'success' ? '✓' : type === 'warn' ? '⚠' : type === 'error' ? '✕' : 'ℹ';
+    toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-text">${escapeHtml(text)}</span>`;
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('visible'));
+    setTimeout(() => {
+        toast.classList.remove('visible');
+        setTimeout(() => toast.remove(), 300);
+    }, 3200);
+}
+
+// --- INTERACTIVE SPLIT-SLIDER & COMPARE MODES ---
+var _compareMode = 'split';
+var _splitPos = 50;
+var _isDraggingSplit = false;
+
+function setCompareMode(mode) {
+    _compareMode = mode;
+    if (!U.comparePlayer) return;
+    U.comparePlayer.classList.remove('mode-split', 'mode-side', 'mode-hold');
+    U.comparePlayer.classList.add(`mode-${mode}`);
+
+    U.modeSplitBtn?.classList.toggle('active', mode === 'split');
+    U.modeSideBtn?.classList.toggle('active', mode === 'side');
+    U.modeHoldBtn?.classList.toggle('active', mode === 'hold');
+
+    if (U.compareModeHint) {
+        if (mode === 'split') U.compareModeHint.textContent = 'Kéo thanh chia đôi để so sánh trực quan Trước / Sau';
+        else if (mode === 'side') U.compareModeHint.textContent = 'Hiển thị song song hai bên';
+        else if (mode === 'hold') U.compareModeHint.textContent = 'Nhấp giữ chuột vào khung hình để xem ảnh gốc';
+    }
+
+    if (mode === 'split') {
+        updateSplitPos(_splitPos);
+    } else {
+        if (U.processedPane) {
+            U.processedPane.style.clipPath = '';
+            U.processedPane.style.opacity = '1';
+        }
+        if (U.splitDivider) U.splitDivider.style.display = 'none';
+    }
+}
+
+function updateSplitPos(pct) {
+    _splitPos = Math.max(0, Math.min(100, pct));
+    if (U.comparePlayer) {
+        U.comparePlayer.style.setProperty('--split-pos', `${_splitPos}%`);
+    }
+    if (U.splitDivider) {
+        U.splitDivider.style.display = _compareMode === 'split' ? 'block' : 'none';
+        U.splitDivider.style.left = `${_splitPos}%`;
+    }
+    if (U.processedPane && _compareMode === 'split') {
+        U.processedPane.style.clipPath = `polygon(${_splitPos}% 0, 100% 0, 100% 100%, ${_splitPos}% 100%)`;
+        U.processedPane.style.opacity = '1';
+    }
+}
+
+function setupSplitCompareSlider() {
+    if (!U.comparePlayer) return;
+
+    U.modeSplitBtn?.addEventListener('click', () => setCompareMode('split'));
+    U.modeSideBtn?.addEventListener('click', () => setCompareMode('side'));
+    U.modeHoldBtn?.addEventListener('click', () => setCompareMode('hold'));
+
+    setCompareMode('split');
+
+    function handleMove(clientX) {
+        if (_compareMode !== 'split') return;
+        let rect = U.comparePlayer.getBoundingClientRect();
+        if (rect.width <= 0) return;
+        let pct = ((clientX - rect.left) / rect.width) * 100;
+        updateSplitPos(pct);
+    }
+
+    U.comparePlayer.addEventListener('mousedown', (e) => {
+        if (_isDrawingBox) return;
+        if (_compareMode === 'split') {
+            _isDraggingSplit = true;
+            handleMove(e.clientX);
+        } else if (_compareMode === 'hold') {
+            if (U.processedPane) U.processedPane.style.opacity = '0';
+        }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (_isDraggingSplit && _compareMode === 'split') {
+            handleMove(e.clientX);
+        }
+    });
+
+    window.addEventListener('mouseup', () => {
+        _isDraggingSplit = false;
+        if (_compareMode === 'hold' && U.processedPane) {
+            U.processedPane.style.opacity = '1';
+        }
+    });
+
+    U.comparePlayer.addEventListener('touchstart', (e) => {
+        if (_isDrawingBox) return;
+        if (e.touches && e.touches[0]) {
+            if (_compareMode === 'split') {
+                _isDraggingSplit = true;
+                handleMove(e.touches[0].clientX);
+            } else if (_compareMode === 'hold') {
+                if (U.processedPane) U.processedPane.style.opacity = '0';
+            }
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+        if (_isDraggingSplit && _compareMode === 'split' && e.touches && e.touches[0]) {
+            handleMove(e.touches[0].clientX);
+        }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+        _isDraggingSplit = false;
+        if (_compareMode === 'hold' && U.processedPane) {
+            U.processedPane.style.opacity = '1';
+        }
+    });
+}
+
+// --- CLIPBOARD PASTE SUPPORT ---
+function setupClipboardPaste() {
+    window.addEventListener('paste', async (e) => {
+        let items = Array.from(e.clipboardData?.items || []);
+        let imageFiles = [];
+        for (let item of items) {
+            if (item.type.startsWith('image/')) {
+                let f = item.getAsFile();
+                if (f) {
+                    let ext = item.type === 'image/jpeg' ? 'jpg' : item.type === 'image/webp' ? 'webp' : 'png';
+                    let renamed = new File([f], `clipboard_${Date.now()}.${ext}`, { type: item.type });
+                    imageFiles.push(renamed);
+                }
+            }
+        }
+        if (imageFiles.length > 0) {
+            e.preventDefault();
+            await Tm(imageFiles);
+            showToast(`📋 Đã dán ${imageFiles.length} ảnh từ Clipboard!`, 'success');
+            let allTasks = Array.from(fn.tasks.values());
+            let matched = allTasks.find(t => t.file === imageFiles[0]) || allTasks[allTasks.length - 1];
+            if (matched) {
+                _m('single');
+                inspectTask(matched);
+            }
+        }
+    });
+}
+
+// --- PRO KEYBOARD SHORTCUTS & MODAL ---
+function setupHotkeysAndModal() {
+    U.openHotkeysBtn?.addEventListener('click', () => {
+        if (U.hotkeysModal) U.hotkeysModal.style.display = 'flex';
+    });
+    U.closeHotkeysBtn?.addEventListener('click', () => {
+        if (U.hotkeysModal) U.hotkeysModal.style.display = 'none';
+    });
+    U.hotkeysModal?.addEventListener('click', (e) => {
+        if (e.target === U.hotkeysModal) U.hotkeysModal.style.display = 'none';
+    });
+
+    window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+
+        // Space: Play/Pause video
+        if (e.code === 'Space') {
+            e.preventDefault();
+            if (U.playPauseBtn && !U.playPauseBtn.disabled) {
+                U.playPauseBtn.click();
+            }
+        }
+        // '[' : Previous file in queue
+        if (e.key === '[' || (e.altKey && e.key === 'ArrowLeft')) {
+            e.preventDefault();
+            U.prevFileBtn && !U.prevFileBtn.disabled && U.prevFileBtn.click();
+        }
+        // ']' : Next file in queue
+        if (e.key === ']' || (e.altKey && e.key === 'ArrowRight')) {
+            e.preventDefault();
+            U.nextFileBtn && !U.nextFileBtn.disabled && U.nextFileBtn.click();
+        }
+        // 'D' or Ctrl+S: Download inspected file result
+        if ((e.key === 'd' || e.key === 'D') && !e.ctrlKey && !e.altKey) {
+            if (U.downloadBtn && !U.downloadBtn.getAttribute('aria-disabled')) {
+                e.preventDefault();
+                U.downloadBtn.click();
+                showToast('⬇ Đang tải file đã khử watermark...', 'info');
+            }
+        }
+        // 'B': Toggle Smart Box drawing
+        if (e.key === 'b' || e.key === 'B') {
+            e.preventDefault();
+            U.toggleBoxBtn && U.toggleBoxBtn.click();
+        }
+        // '1': Switch to Batch Tab
+        if (e.key === '1') {
+            _m('batch');
+        }
+        // '2': Switch to Single Inspector Tab
+        if (e.key === '2') {
+            _m('single');
+            updateSingleFileSwitcher();
+        }
+        // 'H' hold: Hold view
+        if (e.key === 'h' || e.key === 'H') {
+            if (_compareMode === 'hold' && U.processedPane) {
+                U.processedPane.style.opacity = '0';
+            }
+        }
+        // Escape: Close modal or exit box drawing
+        if (e.key === 'Escape') {
+            if (U.hotkeysModal && U.hotkeysModal.style.display === 'flex') {
+                U.hotkeysModal.style.display = 'none';
+            } else if (_isBoxModeActive) {
+                U.toggleBoxBtn && U.toggleBoxBtn.click();
+            }
+        }
+    });
+
+    window.addEventListener('keyup', (e) => {
+        if (e.key === 'h' || e.key === 'H') {
+            if (_compareMode === 'hold' && U.processedPane) {
+                U.processedPane.style.opacity = '1';
+            }
+        }
+    });
+}
+
+setupSplitCompareSlider();
+setupClipboardPaste();
+setupHotkeysAndModal();
 function setupAppLifecycle() {
     function ping() {
         fetch('/api/heartbeat', {

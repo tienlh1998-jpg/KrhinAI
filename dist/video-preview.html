@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Krhin AI - Xoá Watermark Ảnh & Video</title>
+  <title>Krhin AI — Watermark Remover Studio Pro</title>
   <link rel="icon" type="image/x-icon" href="/app.ico">
-  <meta name="description" content="Krhin AI - Công cụ xoá logo hình mờ Gemini AI và Veo Video chất lượng cao, 100% xử lý cục bộ trên máy tính.">
+  <meta name="description" content="Krhin AI Studio - Phần mềm xoá logo hình mờ Gemini AI và Veo Video chất lượng cao, 100% xử lý cục bộ trên máy tính.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-
     :root {
-      --bg: #060913;
-      --bg-subtle: #0a101d;
-      --panel: rgba(13, 21, 39, 0.75);
+      --bg: #050811;
+      --bg-subtle: #090f1e;
+      --panel: rgba(11, 19, 36, 0.78);
       --panel-solid: #0d1527;
-      --panel-hover: rgba(24, 38, 68, 0.85);
-      --panel-border: rgba(56, 189, 248, 0.12);
-      --panel-border-hover: rgba(56, 189, 248, 0.4);
-      --panel-border-glow: rgba(0, 242, 254, 0.25);
+      --panel-hover: rgba(18, 30, 56, 0.9);
+      --panel-border: rgba(56, 189, 248, 0.16);
+      --panel-border-hover: rgba(56, 189, 248, 0.45);
+      --panel-border-glow: rgba(0, 242, 254, 0.35);
       
       --text: #f8fafc;
       --text-muted: #94a3b8;
@@ -26,11 +28,11 @@
       --primary: #00f2fe;
       --primary-end: #4facfe;
       --primary-hover: #38bdf8;
-      --primary-glow: rgba(0, 242, 254, 0.35);
+      --primary-glow: rgba(0, 242, 254, 0.4);
       
       --accent: #10b981;
       --accent-hover: #059669;
-      --accent-glow: rgba(16, 185, 129, 0.35);
+      --accent-glow: rgba(16, 185, 129, 0.4);
       
       --vip-gold: #f59e0b;
       --vip-orange: #ef4444;
@@ -47,10 +49,10 @@
       --radius-lg: 20px;
       --radius-full: 9999px;
       
-      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
-      --shadow-md: 0 10px 30px -4px rgba(0, 0, 0, 0.5);
-      --shadow-lg: 0 20px 50px -8px rgba(0, 0, 0, 0.7);
-      --shadow-glow: 0 0 35px rgba(0, 242, 254, 0.18);
+      --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 12px 36px -4px rgba(0, 0, 0, 0.55);
+      --shadow-lg: 0 24px 60px -8px rgba(0, 0, 0, 0.75);
+      --shadow-glow: 0 0 35px rgba(0, 242, 254, 0.22);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,9 +60,9 @@
     body {
       min-height: 100vh;
       background: 
-        radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.35) 0%, transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.38) 0%, transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.14) 0%, transparent 50%),
         var(--bg);
       background-attachment: fixed;
       color: var(--text);
@@ -70,9 +72,9 @@
     }
 
     .shell {
-      width: min(1520px, calc(100% - 32px));
+      width: min(1560px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 12px 0 24px;
+      padding: 12px 0 28px;
     }
 
     /* Custom Scrollbars */
@@ -81,16 +83,16 @@
     ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 254, 0.6); }
 
-    /* VIP Header Compact */
+    /* Header Studio Pro */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 10px 18px;
-      background: rgba(13, 21, 39, 0.65);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      padding: 10px 20px;
+      background: rgba(11, 19, 36, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--panel-border);
       border-radius: var(--radius-md);
       margin-bottom: 12px;
@@ -104,15 +106,15 @@
     }
 
     .brand-icon {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #8b5cf6 100%);
+      background: linear-gradient(135deg, #00f2fe 0%, #3b82f6 50%, #8b5cf6 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      box-shadow: 0 0 16px var(--primary-glow);
+      font-size: 1.35rem;
+      box-shadow: 0 0 20px var(--primary-glow);
     }
 
     .brand-title {
@@ -137,14 +139,15 @@
     }
 
     .version-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
+      font-size: 0.7rem;
+      font-weight: 800;
       padding: 2px 8px;
       border-radius: var(--radius-full);
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
       color: #38bdf8;
       font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
     }
 
     .brand-title p {
@@ -175,25 +178,51 @@
 
     .tech-pill.primary {
       background: rgba(0, 242, 254, 0.08);
-      border-color: rgba(0, 242, 254, 0.25);
+      border-color: rgba(0, 242, 254, 0.28);
       color: var(--primary);
     }
 
     .tech-pill.accent {
       background: rgba(16, 185, 129, 0.08);
-      border-color: rgba(16, 185, 129, 0.25);
+      border-color: rgba(16, 185, 129, 0.28);
       color: var(--accent);
     }
 
     .tech-pill .dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulseDot 2s infinite ease-in-out;
     }
 
-    /* VIP Navigation Tabs Bar Compact */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .btn-hotkeys {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #c4b5fd;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-hotkeys:hover {
+      background: rgba(139, 92, 246, 0.25);
+      border-color: #a78bfa;
+      color: #fff;
+    }
+
+    /* Navigation Tabs Bar */
     .tabs-nav-bar {
       display: flex;
       align-items: center;
@@ -207,7 +236,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(13, 21, 39, 0.7);
+      background: rgba(11, 19, 36, 0.7);
       backdrop-filter: blur(16px);
       padding: 4px;
       border-radius: var(--radius-md);
@@ -215,9 +244,9 @@
     }
 
     .tab-btn {
-      padding: 7px 16px;
+      padding: 8px 18px;
       border-radius: var(--radius-sm);
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--text-muted);
       background: transparent;
@@ -225,7 +254,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       transition: all 0.2s ease;
     }
 
@@ -237,27 +266,40 @@
     .tab-btn.active {
       color: #fff;
       background: linear-gradient(135deg, rgba(0, 242, 254, 0.22), rgba(99, 102, 241, 0.22));
-      border: 1px solid rgba(0, 242, 254, 0.45);
-      box-shadow: 0 2px 10px rgba(0, 242, 254, 0.2);
+      border: 1px solid rgba(0, 242, 254, 0.5);
+      box-shadow: 0 4px 16px rgba(0, 242, 254, 0.25);
     }
 
     .tab-badge {
       font-size: 0.72rem;
       font-weight: 800;
-      padding: 1px 6px;
+      padding: 1px 7px;
       border-radius: var(--radius-full);
       background: rgba(0, 242, 254, 0.25);
       color: #7dd3fc;
+      font-family: 'JetBrains Mono', monospace;
     }
 
     .mode-hint-pill {
       font-size: 0.78rem;
       font-weight: 600;
       color: #94a3b8;
-      background: rgba(13, 21, 39, 0.6);
+      background: rgba(11, 19, 36, 0.6);
       padding: 6px 14px;
       border-radius: var(--radius-full);
       border: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mode-hint-pill kbd {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #fff;
     }
 
     /* Main Grid Layout */
@@ -266,20 +308,21 @@
 
     .batch-layout, .single-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 350px;
+      grid-template-columns: minmax(0, 1fr) 360px;
       gap: 14px;
       align-items: start;
     }
 
-    /* Glass Panels Compact */
+    /* Glass Panels */
     .panel {
       background: var(--panel);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border-radius: var(--radius-md);
       border: 1px solid var(--panel-border);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .panel:hover {
@@ -287,18 +330,18 @@
     }
 
     .panel-head {
-      padding: 10px 16px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--panel-border);
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 700;
       background: rgba(255, 255, 255, 0.02);
       color: #f1f5f9;
     }
 
-    /* Stats Overview Cards Compact */
+    /* Metric KPI Cards */
     .stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -308,120 +351,151 @@
 
     .stat-card {
       background: var(--panel);
-      backdrop-filter: blur(16px);
       border: 1px solid var(--panel-border);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+      border-color: var(--panel-border-hover);
+      transform: translateY(-1px);
+    }
+
+    .stat-card .label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card.primary { border-left: 3px solid var(--primary); }
+    .stat-card.primary .value { color: var(--primary); }
+    .stat-card.accent { border-left: 3px solid var(--accent); }
+    .stat-card.accent .value { color: var(--accent); }
+    .stat-card.vip { border-left: 3px solid var(--vip-gold); }
+    .stat-card.vip .value { color: var(--vip-gold); }
+
+    /* Modern Dropzone */
+    .dropzone {
+      background: rgba(11, 19, 36, 0.55);
+      border: 2px dashed rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .stat-card::before {
-      content: "";
+    .dropzone::before {
+      content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #334155, transparent);
-    }
-
-    .stat-card.primary::before { background: linear-gradient(90deg, #00f2fe, #4facfe); }
-    .stat-card.accent::before { background: linear-gradient(90deg, #10b981, #059669); }
-    .stat-card.vip::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
-
-    .stat-card .label {
-      font-size: 0.74rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .stat-card .value {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .stat-card.accent .value { color: #34d399; }
-    .stat-card.primary .value { color: #38bdf8; }
-    .stat-card.vip .value { color: #c084fc; }
-
-    /* Dropzone Compact & Sleek */
-    .dropzone {
-      border: 1.5px dashed rgba(56, 189, 248, 0.3);
-      background: rgba(13, 21, 39, 0.55);
-      backdrop-filter: blur(16px);
-      border-radius: var(--radius-md);
-      padding: 16px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
     .dropzone:hover, .dropzone[data-dragging="true"] {
       border-color: var(--primary);
-      background: rgba(0, 242, 254, 0.06);
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+      background: rgba(11, 19, 36, 0.8);
+    }
+    .dropzone:hover::before, .dropzone[data-dragging="true"]::before {
+      opacity: 1;
     }
 
     .dropzone-left {
       display: flex;
       align-items: center;
-      gap: 14px;
-      text-align: left;
+      gap: 16px;
     }
 
     .dropzone-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-
-    .dropzone strong {
-      display: block;
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 2px;
-    }
-
-    .dropzone p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin: 0;
-    }
-
-    .dropzone-chips {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(99, 102, 241, 0.15));
+      border: 1px solid rgba(0, 242, 254, 0.35);
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.15);
+    }
+
+    .dropzone-text strong {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .dropzone-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .format-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
-    .dropzone-chip {
-      font-size: 0.72rem;
+    .format-tag {
+      font-size: 0.68rem;
       font-weight: 700;
-      padding: 3px 10px;
-      border-radius: var(--radius-full);
+      font-family: 'JetBrains Mono', monospace;
+      padding: 1px 6px;
+      border-radius: 4px;
       background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
     }
 
-    /* Queue Toolbar Compact */
+    .clipboard-tip {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    /* Queue Toolbar & Actions */
     .queue-toolbar {
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 16px;
-      background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid var(--panel-border);
       flex-wrap: wrap;
     }
@@ -433,69 +507,69 @@
       flex-wrap: wrap;
     }
 
-    /* Buttons Compact */
-    button, .btn, .download-link {
-      font: inherit;
-      height: 34px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--panel-border);
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      padding: 0 14px;
-      cursor: pointer;
+    /* Professional Buttons */
+    .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
+      height: 36px;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
       font-weight: 700;
-      font-size: 0.82rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
-      transition: all 0.2s ease;
       white-space: nowrap;
     }
 
-    button:hover:not(:disabled), .btn:hover:not(:disabled), .download-link:hover:not([aria-disabled="true"]) {
-      background: rgba(255, 255, 255, 0.12);
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f2fe 0%, #38bdf8 100%);
+      color: #040914;
+      box-shadow: 0 0 18px rgba(0, 242, 254, 0.35);
+      border: none;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #38bdf8 0%, #00f2fe 100%);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+      border: none;
+    }
+    .btn-success:hover:not(:disabled) {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--panel-border);
+      color: #e2e8f0;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
       border-color: var(--panel-border-hover);
       color: #fff;
     }
 
-    button:active:not(:disabled), .btn:active:not(:disabled) { transform: scale(0.98); }
-
-    button:disabled, .btn:disabled, .download-link[aria-disabled="true"] {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .btn-primary, button.primary {
-      background: linear-gradient(135deg, #0284c7 0%, #00f2fe 100%);
-      border: none;
-      color: #060913;
-      font-weight: 800;
-      box-shadow: 0 2px 12px rgba(0, 242, 254, 0.35);
-    }
-    .btn-primary:hover:not(:disabled), button.primary:hover:not(:disabled) {
-      background: linear-gradient(135deg, #38bdf8 0%, #4facfe 100%);
-      box-shadow: 0 4px 18px rgba(0, 242, 254, 0.5);
-      color: #060913;
-    }
-
-    .btn-success, .download-link {
-      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-      border: none;
-      color: #fff;
-      font-weight: 800;
-      box-shadow: 0 2px 10px var(--accent-glow);
-    }
-    .btn-success:hover:not(:disabled), .download-link:hover:not([aria-disabled="true"]) {
-      background: linear-gradient(135deg, #047857 0%, #34d399 100%);
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
-    }
-
     .btn-danger {
-      background: rgba(244, 63, 94, 0.15);
-      border-color: rgba(244, 63, 94, 0.3);
-      color: #fda4af;
+      background: rgba(244, 63, 94, 0.12);
+      border-color: rgba(244, 63, 94, 0.35);
+      color: #fb7185;
     }
     .btn-danger:hover:not(:disabled) {
       background: rgba(244, 63, 94, 0.25);
@@ -516,12 +590,12 @@
       font-size: 0.85rem;
     }
 
-    /* Scrollable Queue List with Fixed Height */
+    /* Scrollable Queue List */
     .queue-list {
       display: flex;
       flex-direction: column;
-      height: 280px;
-      max-height: 280px;
+      height: 310px;
+      max-height: 310px;
       overflow-y: auto;
       overflow-x: hidden;
     }
@@ -531,20 +605,20 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 40px 16px;
+      gap: 12px;
+      padding: 48px 16px;
       color: var(--text-dim);
       text-align: center;
       height: 100%;
     }
-    .queue-empty .icon { font-size: 2.2rem; opacity: 0.5; }
+    .queue-empty .icon { font-size: 2.4rem; opacity: 0.5; }
 
     .queue-item {
       display: grid;
-      grid-template-columns: 36px minmax(0, 1fr) auto;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
       align-items: center;
-      gap: 12px;
-      padding: 10px 16px;
+      gap: 14px;
+      padding: 10px 18px;
       border-bottom: 1px solid var(--panel-border);
       transition: background 0.15s ease;
     }
@@ -552,15 +626,15 @@
     .queue-item:hover { background: rgba(255, 255, 255, 0.03); }
 
     .queue-item-icon {
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--panel-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
 
     .queue-item-info {
@@ -585,6 +659,7 @@
       display: flex;
       gap: 8px;
       font-family: 'JetBrains Mono', monospace;
+      flex-wrap: wrap;
     }
 
     .queue-item-progress {
@@ -596,7 +671,7 @@
     }
     .queue-item-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      background: linear-gradient(90deg, #00f2fe, #38bdf8);
       width: 0%;
       transition: width 0.2s ease;
     }
@@ -620,7 +695,7 @@
       gap: 6px;
     }
 
-    /* Controls Panel & Settings Cards High-Contrast VIP */
+    /* Controls Panel & Settings Cards */
     .controls-panel {
       display: flex;
       flex-direction: column;
@@ -629,7 +704,7 @@
     }
 
     .setting-card {
-      background: rgba(22, 34, 56, 0.7);
+      background: rgba(18, 29, 50, 0.65);
       border: 1px solid rgba(56, 189, 248, 0.2);
       border-radius: var(--radius-sm);
       padding: 10px 12px;
@@ -639,7 +714,7 @@
       transition: all 0.2s ease;
     }
     .setting-card:hover {
-      background: rgba(26, 42, 70, 0.85);
+      background: rgba(24, 38, 66, 0.8);
       border-color: rgba(56, 189, 248, 0.45);
     }
 
@@ -683,7 +758,7 @@
       background: #28374f !important;
       border-color: #38bdf8;
     }
-    select:focus, input[type="number"]:focus {
+    select:focus, input[type="number"]:focus, input[type="text"]:focus {
       border-color: var(--primary);
       box-shadow: 0 0 12px var(--primary-glow);
     }
@@ -716,13 +791,9 @@
       margin-right: 8px;
       transition: all 0.2s ease;
     }
-    input[type="file"]::file-selector-button:hover {
-      background: rgba(0, 242, 254, 0.25);
-      border-color: #00f2fe;
-    }
 
     .check-card {
-      background: rgba(22, 34, 56, 0.55);
+      background: rgba(18, 29, 50, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-sm);
       padding: 8px 12px;
@@ -733,7 +804,7 @@
       transition: all 0.2s ease;
     }
     .check-card:hover {
-      background: rgba(26, 42, 70, 0.8);
+      background: rgba(24, 38, 66, 0.8);
       border-color: rgba(56, 189, 248, 0.35);
     }
     .check-card input[type="checkbox"] {
@@ -749,40 +820,275 @@
       line-height: 1.3;
     }
 
-    /* Single Comparison Player Studio */
+    /* SINGLE INSPECTOR / COMPARE STUDIO */
+    .single-file-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .single-file-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-bar-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .single-file-select {
+      flex: 1;
+      max-width: 450px;
+      height: 30px;
+      font-size: 0.8rem;
+    }
+
+    .single-file-bar-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .single-file-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--panel-border);
+      background: rgba(11, 19, 36, 0.4);
+    }
+
+    .file-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .file-pill:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .file-pill.active {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: #00f2fe;
+      color: #00f2fe;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .status-dot.done { background: #34d399; box-shadow: 0 0 6px #34d399; }
+    .status-dot.active { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
+    .status-dot.error { background: #fb7185; }
+    .status-dot.pending { background: #94a3b8; }
+
+    /* COMPARE MODE SWITCHER TOOLBAR */
+    .compare-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid var(--panel-border);
+      flex-wrap: wrap;
+    }
+
+    .compare-modes {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .compare-mode-btn {
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--panel-border);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .compare-mode-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .compare-mode-btn.active {
+      color: #00f2fe;
+      background: rgba(0, 242, 254, 0.12);
+      border-color: #00f2fe;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+
+    .compare-hint {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* THE COMPARE PLAYER CONTAINER */
     .compare-player {
       position: relative;
       aspect-ratio: 16 / 9;
       background: #02040a;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      border-radius: var(--radius-md) var(--radius-md) 0 0;
       overflow: hidden;
+      user-select: none;
     }
 
-    .compare-pane {
-      position: relative;
-      overflow: hidden;
-      background: #02040a;
+    /* MODE: SPLIT SLIDER */
+    .compare-player.mode-split .compare-pane-before {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+    .compare-player.mode-split .compare-pane-after {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: polygon(var(--split-pos, 50%) 0, 100% 0, 100% 100%, var(--split-pos, 50%) 100%);
+    }
+
+    /* MODE: SIDE-BY-SIDE */
+    .compare-player.mode-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .compare-player.mode-side .compare-pane {
+      position: relative;
+      inset: auto;
+      clip-path: none !important;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* MODE: HOLD TO VIEW */
+    .compare-player.mode-hold .compare-pane-before {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .compare-player.mode-hold .compare-pane-after {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: none !important;
+      transition: opacity 0.15s ease;
+    }
+
     .compare-pane video, .compare-pane img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      pointer-events: none;
     }
-    .compare-pane[hidden], .badge[hidden], .empty[hidden] { display: none; }
+
+    /* Draggable Split Divider Line & Handle */
+    .split-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: var(--split-pos, 50%);
+      width: 0;
+      z-index: 15;
+      pointer-events: none;
+      transform: translateX(-50%);
+    }
+
+    .split-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: #00f2fe;
+      box-shadow: 0 0 12px #00f2fe, 0 0 24px rgba(0, 242, 254, 0.6);
+    }
+
+    .split-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(6, 12, 24, 0.9);
+      border: 2px solid #00f2fe;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #00f2fe;
+      font-size: 0.68rem;
+      cursor: ew-resize;
+      pointer-events: auto;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .split-handle:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 0 28px rgba(0, 242, 254, 0.8);
+    }
+    .split-handle-grip {
+      font-size: 0.72rem;
+      opacity: 0.8;
+      letter-spacing: -2px;
+    }
 
     .badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 6;
+      top: 12px;
+      z-index: 12;
       border-radius: var(--radius-sm);
-      padding: 3px 8px;
+      padding: 4px 10px;
       background: rgba(6, 9, 19, 0.85);
       backdrop-filter: blur(12px);
       border: 1px solid var(--panel-border);
@@ -793,13 +1099,15 @@
     }
 
     .badge.before {
+      left: 12px;
       border-color: rgba(244, 63, 94, 0.5);
       color: #fda4af;
     }
     .badge.after {
+      right: 12px;
       border-color: rgba(16, 185, 129, 0.5);
       color: #6ee7b7;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
     }
 
     .empty {
@@ -808,8 +1116,8 @@
       display: grid;
       place-items: center;
       color: var(--text-dim);
-      font-size: 0.86rem;
-      font-weight: 500;
+      font-size: 0.88rem;
+      font-weight: 600;
       text-align: center;
       padding: 16px;
       z-index: 4;
@@ -820,34 +1128,48 @@
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
-      gap: 12px;
-      padding: 8px 16px;
+      gap: 14px;
+      padding: 10px 18px;
       background: rgba(255, 255, 255, 0.02);
       border-top: 1px solid var(--panel-border);
     }
 
     .play-toggle {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       padding: 0;
       border-radius: 50%;
-      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      background: linear-gradient(135deg, #00f2fe, #38bdf8);
       color: #060913;
       border: none;
-      box-shadow: 0 0 8px var(--primary-glow);
+      box-shadow: 0 0 12px var(--primary-glow);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
     }
+    .play-toggle:hover:not(:disabled) {
+      transform: scale(1.08);
+      box-shadow: 0 0 18px rgba(0, 242, 254, 0.6);
+    }
+    .play-toggle:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
     .play-toggle::before {
       content: "";
       width: 0; height: 0;
       margin-left: 2px;
-      border-top: 4px solid transparent;
-      border-bottom: 4px solid transparent;
-      border-left: 6px solid currentColor;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid currentColor;
     }
     .play-toggle[data-playing="true"]::before,
     .play-toggle[data-playing="true"]::after {
       content: "";
-      width: 2px; height: 9px;
+      width: 3px; height: 11px;
       margin: 0 1px;
       border: 0;
       background: currentColor;
@@ -856,33 +1178,33 @@
     input[type="range"] {
       -webkit-appearance: none;
       width: 100%;
-      height: 5px;
+      height: 6px;
       background: #1e293b;
       border-radius: 3px;
       cursor: pointer;
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 13px;
-      height: 13px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: var(--primary);
-      box-shadow: 0 0 8px var(--primary-glow);
+      box-shadow: 0 0 10px var(--primary-glow);
     }
 
     .time-label {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-family: 'JetBrains Mono', monospace;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    /* Metadata HUD Compact */
+    /* Metadata HUD */
     dl { margin: 0; display: grid; }
     dl div {
-      min-height: 32px;
+      min-height: 34px;
       display: grid;
-      grid-template-columns: 120px minmax(0, 1fr);
+      grid-template-columns: 130px minmax(0, 1fr);
       align-items: center;
       gap: 10px;
       padding: 0 16px;
@@ -898,164 +1220,194 @@
       padding: 10px 14px;
       background: rgba(10, 16, 29, 0.75);
       color: var(--text-muted);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       border: 1px solid var(--panel-border);
-    }
-    .status-box[data-tone="error"] { color: #fda4af; background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); }
-    .status-box[data-tone="warn"] { color: #fde68a; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
-    .status-box[data-tone="success"] { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); }
-
-    /* Single Inspector File Switcher Bar & Pills */
-    .single-file-bar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 7px 16px;
-      background: rgba(15, 23, 42, 0.7);
-      border-bottom: 1px solid var(--panel-border);
-      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .status-box[data-tone="success"] {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
+      color: #6ee7b7;
+    }
+    .status-box[data-tone="warn"] {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.08);
+      color: #fde68a;
+    }
+    .status-box[data-tone="error"] {
+      border-color: rgba(244, 63, 94, 0.4);
+      background: rgba(244, 63, 94, 0.08);
+      color: #fda4af;
     }
 
-    .single-file-bar-left {
+    /* Download Link Button */
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s ease;
+      font-size: 0.88rem;
+    }
+    .download-link:hover:not([aria-disabled="true"]) {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.55);
+      transform: translateY(-1px);
+    }
+    .download-link[aria-disabled="true"] {
+      opacity: 0.35;
+      pointer-events: none;
+      cursor: not-allowed;
+      filter: grayscale(0.5);
+    }
+
+    /* TOAST NOTIFICATION CONTAINER */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      background: rgba(13, 21, 39, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.2);
+      backdrop-filter: blur(16px);
+      color: #fff;
+      font-size: 0.84rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 10px;
-      flex: 1;
-      min-width: 240px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+      max-width: 420px;
+    }
+    .toast.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .toast-success { border-color: rgba(16, 185, 129, 0.5); }
+    .toast-success .toast-icon { color: #34d399; font-weight: 900; }
+    .toast-warn { border-color: rgba(245, 158, 11, 0.5); }
+    .toast-warn .toast-icon { color: #fbbf24; font-weight: 900; }
+    .toast-error { border-color: rgba(244, 63, 94, 0.5); }
+    .toast-error .toast-icon { color: #f87171; font-weight: 900; }
+    .toast-info .toast-icon { color: #38bdf8; font-weight: 900; }
+
+    /* HOTKEYS MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(4, 7, 15, 0.8);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .file-bar-label {
-      font-size: 0.8rem;
+    .modal-card {
+      width: min(520px, 100%);
+      background: #0d1527;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 242, 254, 0.25);
+      overflow: hidden;
+      animation: modalFadeIn 0.25s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .modal-header h3 {
+      font-size: 1rem;
       font-weight: 800;
       color: #fff;
-      white-space: nowrap;
+    }
+
+    .modal-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .hotkey-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.84rem;
     }
-
-    .single-file-select {
-      flex: 1;
-      max-width: 440px;
-      height: 32px !important;
-      background: #1e293b !important;
-      color: #ffffff !important;
-      border: 1px solid rgba(56, 189, 248, 0.35) !important;
-      border-radius: var(--radius-sm);
-      padding: 0 10px;
-      font-size: 0.8rem !important;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .single-file-select:hover {
-      border-color: var(--primary) !important;
-    }
-
-    .single-file-bar-nav {
+    .hotkey-row:last-child { border-bottom: none; }
+    .hotkey-desc { color: #cbd5e1; }
+    .hotkey-keys {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 4px;
     }
-
-    .single-file-pills {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 16px;
-      background: rgba(10, 16, 29, 0.65);
-      border-bottom: 1px solid var(--panel-border);
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-space: nowrap;
-    }
-
-    .file-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 12px;
-      border-radius: var(--radius-full);
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
+    .hotkey-keys kbd {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 2px 7px;
       font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .file-pill:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-      border-color: rgba(56, 189, 248, 0.45);
-      transform: translateY(-1px);
-    }
-
-    .file-pill.active {
-      background: rgba(0, 242, 254, 0.18);
-      border-color: #00f2fe;
+      font-family: 'JetBrains Mono', monospace;
       color: #38bdf8;
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
       font-weight: 700;
     }
-
-    .file-pill-icon {
-      font-size: 0.92rem;
-    }
-
-    .file-pill-name {
-      max-width: 160px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-    .status-dot.done { background: #10b981; box-shadow: 0 0 6px #10b981; }
-    .status-dot.active { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; animation: pulseDot 1.5s infinite; }
-    .status-dot.pending { background: #94a3b8; }
-    .status-dot.error { background: #f43f5e; box-shadow: 0 0 6px #f43f5e; }
-
-    /* Responsive */
-    @media (max-width: 1080px) {
-      .batch-layout, .single-layout { grid-template-columns: 1fr; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .dropzone { flex-direction: column; align-items: flex-start; }
-    }
-    @media (max-width: 640px) {
-      .stats-row { grid-template-columns: 1fr; }
-      .queue-item { grid-template-columns: 32px 1fr; gap: 6px; }
-      .queue-item-meta, .queue-item-actions { grid-column: span 2; }
-      header { flex-direction: column; align-items: flex-start; }
-    }
-
   </style>
 </head>
 <body>
   <div class="shell">
-    <!-- Header -->
+    <!-- VIP Header -->
     <header>
       <div class="brand">
-        <div class="brand-icon">💎</div>
+        <div class="brand-icon">✨</div>
         <div class="brand-title">
           <div class="brand-title-row">
             <h1>Krhin AI</h1>
-            <span class="version-badge">v1.1</span>
+            <span class="version-badge">STUDIO PRO v1.2</span>
           </div>
-          <p>Xoá watermark ảnh &amp; video — Xử lý 100% offline</p>
+          <p>Xoá watermark ảnh &amp; video — Xử lý 100% Offline Cục bộ</p>
         </div>
       </div>
       <div class="header-badges">
-        <div class="tech-pill accent"><span class="dot"></span> AI FDnCNN</div>
-        <div class="tech-pill primary">WebGPU / WASM SIMD</div>
+        <button id="openHotkeysBtn" class="btn-hotkeys" type="button" title="Xem danh sách phím tắt">
+          ⌨ Phím tắt
+        </button>
+        <div class="tech-pill accent"><span class="dot"></span> AI FDnCNN Active</div>
+        <div class="tech-pill primary">WebGPU / SIMD</div>
         <div class="tech-pill">100% Offline</div>
       </div>
     </header>
@@ -1068,8 +1420,11 @@
           <span id="queueCountBadge" class="tab-badge">0</span>
         </button>
         <button id="tabSingleBtn" class="tab-btn" type="button">
-          🔍 So sánh chi tiết
+          🔍 So sánh &amp; Tinh chỉnh
         </button>
+      </div>
+      <div class="mode-hint-pill">
+        <span>💡 Mẹo: Nhấn <kbd>Ctrl + V</kbd> bất kỳ lúc nào để dán ảnh trực tiếp từ Clipboard</span>
       </div>
     </div>
 
@@ -1098,13 +1453,22 @@
       <div class="batch-layout">
         <!-- Left: Dropzone & Queue List -->
         <div class="batch-main">
-          <!-- Dropzone -->
+          <!-- Modern Dropzone -->
           <div id="dropzone" class="dropzone" data-dragging="false" role="button" tabindex="0">
             <div class="dropzone-left">
               <span class="dropzone-icon">📥</span>
-              <div>
-                <strong>Kéo thả ảnh hoặc video vào đây</strong>
-                <p>Hỗ trợ JPG, PNG, WebP, MP4, MOV, WebM (chọn nhiều tệp cùng lúc)</p>
+              <div class="dropzone-text">
+                <strong>Kéo thả ảnh hoặc video vào đây (hoặc nhấn Ctrl + V)</strong>
+                <p>Hỗ trợ xử lý hàng loạt nhiều tệp cùng lúc — AI tự động nhận diện logo</p>
+                <div class="format-pills">
+                  <span class="format-tag">JPG</span>
+                  <span class="format-tag">PNG</span>
+                  <span class="format-tag">WEBP</span>
+                  <span class="format-tag">MP4</span>
+                  <span class="format-tag">MOV</span>
+                  <span class="format-tag">WEBM</span>
+                  <span class="clipboard-tip">📋 Hỗ trợ Ctrl + V</span>
+                </div>
               </div>
             </div>
             <button class="btn btn-primary" type="button" onclick="document.getElementById('fileInput').click()">
@@ -1116,20 +1480,20 @@
           <!-- Queue Panel -->
           <div class="panel">
             <div class="queue-toolbar">
-              <div class="panel-head-title" style="font-weight: 700; font-size: 0.95rem; color: #fff;">
-                Danh sách tệp trong hàng đợi
+              <div style="font-weight: 800; font-size: 0.95rem; color: #fff; display: flex; align-items: center; gap: 8px;">
+                <span>Danh sách hàng đợi xử lý</span>
               </div>
               <div class="queue-actions">
                 <button id="startAllBtn" class="btn btn-primary" type="button">
                   ▶ Bắt đầu xử lý
                 </button>
-                <button id="pauseAllBtn" class="btn" type="button" disabled>
+                <button id="pauseAllBtn" class="btn btn-secondary" type="button" disabled>
                   ⏸ Tạm dừng
                 </button>
                 <button id="downloadAllZipBtn" class="btn btn-success" type="button" disabled>
                   📦 Tải ZIP tất cả
                 </button>
-                <button id="clearCompletedBtn" class="btn btn-sm" type="button">
+                <button id="clearCompletedBtn" class="btn btn-sm btn-secondary" type="button">
                   Dọn file xong
                 </button>
                 <button id="clearAllBtn" class="btn btn-sm btn-danger" type="button">
@@ -1142,38 +1506,39 @@
             <div id="queueList" class="queue-list">
               <div id="queueEmpty" class="queue-empty">
                 <div class="icon">📥</div>
-                <p>Chưa có tệp nào trong hàng đợi.<br>Hãy kéo thả ảnh hoặc video vào khung phía trên để bắt đầu!</p>
+                <p>Chưa có tệp nào trong hàng đợi.<br>Hãy kéo thả ảnh/video hoặc nhấn <b>Ctrl + V</b> để bắt đầu!</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Right: Batch Settings Panel -->
+        <!-- Right: Batch Settings Sidebar -->
         <aside class="batch-sidebar">
           <div class="panel">
-            <div class="panel-head">Cài đặt xử lý</div>
+            <div class="panel-head">Cài đặt xuất hàng loạt</div>
             <div class="controls-panel">
               <!-- Concurrency Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Số luồng xử lý</span>
+                  <span>Số luồng xử lý song song</span>
                   <span id="concurrencyLabel" class="setting-badge">2 luồng</span>
                 </div>
                 <select id="concurrencySelect">
-                  <option value="1">1 luồng (Tiết kiệm)</option>
-                  <option value="2" selected>2 luồng (Khuyên dùng)</option>
-                  <option value="3">3 luồng (Máy mạnh)</option>
-                  <option value="4">4 luồng (Máy rất mạnh)</option>
+                  <option value="1">1 luồng (Tiết kiệm RAM)</option>
+                  <option value="2" selected>2 luồng (Cân bằng khuyên dùng)</option>
+                  <option value="4">4 luồng (Tốc độ cao)</option>
+                  <option value="6">6 luồng (Máy mạnh)</option>
+                  <option value="8">8 luồng (Tối đa công suất)</option>
                 </select>
               </div>
 
-              <!-- Denoise Model Card -->
+              <!-- Denoise Backend Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Mô hình khử nhiễu (Denoise)</span>
+                  <span>Mô hình AI khử nhiễu</span>
                 </div>
                 <select id="batchDenoiseBackend">
-                  <option value="allenk-fdncnn-browser-spike" selected>AI FDnCNN (Khuyên dùng)</option>
+                  <option value="allenk-fdncnn-browser-spike" selected>AI FDnCNN Deep Learning (Khuyên dùng)</option>
                   <option value="canvas-edge-denoise">Canvas Edge (Nhanh)</option>
                   <option value="canvas-soft">Canvas Soft</option>
                   <option value="none">Tắt khử nhiễu</option>
@@ -1183,97 +1548,100 @@
               <!-- Bitrate Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Bitrate video xuất ra</span>
+                  <span>Chất lượng Video xuất (Bitrate)</span>
                 </div>
                 <select id="batchBitrate">
-                  <option value="8">8 Mbps (Tiết kiệm dung lượng)</option>
-                  <option value="12" selected>12 Mbps (Mặc định)</option>
-                  <option value="20">20 Mbps (Chất lượng cao)</option>
-                  <option value="35">35 Mbps (Rất cao)</option>
+                  <option value="6">Tiêu chuẩn (6 Mbps - File nhỏ)</option>
+                  <option value="12" selected>Chất lượng cao (12 Mbps - Cân bằng)</option>
+                  <option value="20">Studio Pro (20 Mbps - Sắc nét)</option>
+                  <option value="30">Mastering 4K (30 Mbps - Không suy hao)</option>
                 </select>
               </div>
 
-              <!-- Export & Compression Card -->
+              <!-- Export Image Format & Scale Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Tối ưu xuất file & Nén</span>
+                  <span>Định dạng &amp; Nâng cấp ảnh</span>
                   <span id="batchQualityBadge" class="setting-badge">92%</span>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
                   <div>
-                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Tỷ lệ phân giải ảnh:</label>
+                    <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Độ phân giải</label>
                     <select id="batchScaleSelect">
-                      <option value="1" selected>1x (Kích thước gốc)</option>
-                      <option value="1.5">1.5x (Phóng to sắc nét)</option>
-                      <option value="2">2x (Tăng gấp đôi 2K/4K)</option>
+                      <option value="1" selected>Gốc (1x)</option>
+                      <option value="1.5">Upscale (1.5x)</option>
+                      <option value="2">Upscale (2x Siêu nét)</option>
                     </select>
                   </div>
                   <div>
-                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Định dạng xuất ảnh:</label>
+                    <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Định dạng xuất</label>
                     <select id="batchImageFormat">
-                      <option value="image/webp" selected>WebP (Khuyên dùng - Siêu nhẹ)</option>
-                      <option value="image/png">PNG (Không nén - Chuẩn gốc)</option>
-                      <option value="image/jpeg">JPG (Tương thích cao)</option>
+                      <option value="image/webp" selected>WebP (Tối ưu)</option>
+                      <option value="image/jpeg">JPG (Phổ biến)</option>
+                      <option value="image/png">PNG (Trong suốt)</option>
                     </select>
                   </div>
-                  <div id="qualitySliderGroup">
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 2px;">
-                      <span>Chất lượng nén:</span>
-                      <span id="batchQualityVal" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;">92%</span>
-                    </div>
-                    <input id="batchQualityRange" type="range" min="0.70" max="1.0" step="0.02" value="0.92" style="width: 100%;">
+                </div>
+                <div id="qualitySliderGroup">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Chất lượng nén ảnh:</span>
+                    <span id="batchQualityVal" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;">92%</span>
                   </div>
+                  <input id="batchQualityRange" type="range" min="0.70" max="1.0" step="0.02" value="0.92" style="width: 100%;">
                 </div>
               </div>
 
-              <!-- Custom Branding / Watermark Stamper Card -->
+              <!-- Custom Watermark Branding Stamper Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Đóng dấu bản quyền riêng</span>
-                  <label class="check-label" style="cursor: pointer; margin: 0; display: flex; align-items: center;">
+                  <span>Đóng dấu thương hiệu mới</span>
+                  <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
                     <input id="stampEnableCheck" type="checkbox" style="accent-color: #00f2fe; cursor: pointer; width: 16px; height: 16px;">
+                    <span style="font-size: 0.74rem; color: #38bdf8; font-weight: 700;">Bật</span>
                   </label>
                 </div>
                 <div id="stampSettingsContainer" style="display: none; flex-direction: column; gap: 8px; margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(56, 189, 248, 0.15);">
-                  <div>
-                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Loại dấu:</label>
-                    <select id="stampTypeSelect">
-                      <option value="text" selected>Chữ ký text (@channel)</option>
-                      <option value="image">Logo ảnh (PNG / WebP)</option>
-                    </select>
-                  </div>
-                  <div id="stampTextGroup">
-                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Nội dung chữ ký:</label>
-                    <input id="stampTextInput" type="text" placeholder="@KenhCuaBan" value="@KrhinAI">
-                  </div>
-                  <div id="stampImageGroup" style="display: none;">
-                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Chọn logo PNG trong suốt:</label>
-                    <input id="stampLogoInput" type="file" accept="image/png,image/webp,image/jpeg" style="width: 100%;">
-                    <div id="stampLogoPreview" style="display: none; font-size: 0.72rem; color: #34d399; margin-top: 2px;">✓ Đã tải logo</div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <div>
+                      <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Loại dấu</label>
+                      <select id="stampTypeSelect">
+                        <option value="text" selected>Chữ (Text)</option>
+                        <option value="image">Logo Ảnh (PNG)</option>
+                      </select>
+                    </div>
+                    <div id="stampTextGroup">
+                      <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Nội dung chữ</label>
+                      <input id="stampTextInput" type="text" placeholder="@KenhCuaBan" value="@KrhinAI">
+                    </div>
+                    <div id="stampImageGroup" style="display: none;">
+                      <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Tệp Logo</label>
+                      <input id="stampLogoInput" type="file" accept="image/png,image/webp,image/jpeg" style="width: 100%;">
+                      <div id="stampLogoPreview" style="display: none; font-size: 0.72rem; color: #34d399; margin-top: 2px;">✓ Đã tải logo</div>
+                    </div>
                   </div>
                   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
                     <div>
-                      <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Vị trí đặt:</label>
+                      <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Vị trí</label>
                       <select id="stampPositionSelect" style="font-size: 0.78rem;">
-                        <option value="bottom-right" selected>Dưới - Phải</option>
-                        <option value="bottom-left">Dưới - Trái</option>
-                        <option value="top-right">Trên - Phải</option>
-                        <option value="top-left">Trên - Trái</option>
+                        <option value="bottom-right" selected>Góc dưới phải</option>
+                        <option value="bottom-left">Góc dưới trái</option>
+                        <option value="top-right">Góc trên phải</option>
+                        <option value="top-left">Góc trên trái</option>
                         <option value="center">Chính giữa</option>
                       </select>
                     </div>
                     <div>
-                      <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Kích cỡ:</label>
+                      <label style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Kích thước</label>
                       <select id="stampSizeSelect" style="font-size: 0.78rem;">
-                        <option value="small">Nhỏ</option>
-                        <option value="medium" selected>Vừa</option>
-                        <option value="large">Lớn</option>
+                        <option value="small">Nhỏ (Tinh tế)</option>
+                        <option value="medium" selected>Vừa (Chuẩn)</option>
+                        <option value="large">Lớn (Nổi bật)</option>
                       </select>
                     </div>
                   </div>
                   <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 2px;">
-                      <span>Độ mờ dấu:</span>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 2px;">
+                      <span>Độ trong suốt (Opacity):</span>
                       <span id="stampOpacityVal" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;">85%</span>
                     </div>
                     <input id="stampOpacityRange" type="range" min="0.1" max="1.0" step="0.05" value="0.85" style="width: 100%;">
@@ -1281,19 +1649,19 @@
                 </div>
               </div>
 
-              <!-- Storage Folder Card -->
+              <!-- Output Directory Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Thư mục lưu kết quả</span>
+                  <span>Thư mục lưu tự động</span>
                 </div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                  <button id="selectOutDirBtn" class="btn btn-sm" style="flex: 1; justify-content: flex-start; background: #1e293b; border-color: rgba(56, 189, 248, 0.35); color: #fff;" type="button">
+                <div style="display: flex; gap: 6px;">
+                  <button id="selectOutDirBtn" class="btn btn-sm btn-secondary" style="flex: 1; justify-content: flex-start;" type="button">
                     📁 Chọn thư mục lưu...
                   </button>
                   <button id="clearOutDirBtn" class="btn btn-sm btn-danger" title="Huỷ chọn thư mục" type="button" style="display: none; padding: 0 8px;">✕</button>
                 </div>
                 <button id="openFolderBtn" class="btn btn-sm" style="width: 100%; justify-content: center; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); color: #38bdf8;" type="button">
-                  Mở thư mục Downloads
+                  Mở thư mục Tải về (Downloads)
                 </button>
                 <span id="selectedOutDirLabel" style="font-size: 0.76rem; color: #34d399; font-family: 'JetBrains Mono', monospace; word-break: break-all; display: none;"></span>
               </div>
@@ -1301,17 +1669,15 @@
               <!-- Checkbox Options -->
               <label class="check-card">
                 <input id="autoDownloadCheck" type="checkbox">
-                <span>Tự động lưu file khi hoàn thành</span>
+                <span>Tự động tải về máy khi xử lý xong từng tệp</span>
               </label>
-
               <label class="check-card">
                 <input id="batchAdaptiveAlphaCheck" type="checkbox">
-                <span>Tự thích ứng độ mờ (Adaptive Alpha)</span>
+                <span>Thích ứng Alpha động theo nền video</span>
               </label>
-
               <label class="check-card">
                 <input id="batchAllowLowConfidenceCheck" type="checkbox" checked>
-                <span>Quét cả logo mờ / logo phụ</span>
+                <span>Quét cả logo mờ / logo không chuẩn vị trí</span>
               </label>
             </div>
           </div>
@@ -1326,8 +1692,10 @@
         <section class="workspace" aria-label="So sánh video và ảnh">
           <div class="panel">
             <div class="panel-head">
-              <span>So sánh Trước / Sau</span>
-              <span id="progressText" style="font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; color: var(--primary); font-weight: 700;">Chưa chọn file</span>
+              <span style="display: flex; align-items: center; gap: 8px;">
+                <span>✨ Studio So sánh &amp; Tinh chỉnh Chi tiết</span>
+              </span>
+              <span id="progressText" style="font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; color: var(--primary); font-weight: 700;">Chưa chọn tệp</span>
             </div>
 
             <!-- Single Inspector File Switcher Strip -->
@@ -1337,30 +1705,63 @@
                 <select id="singleFileSelect" class="single-file-select" aria-label="Chọn file để xem"></select>
               </div>
               <div class="single-file-bar-nav">
-                <button id="prevFileBtn" class="btn btn-sm btn-icon" title="Tệp trước đó" type="button" disabled>◀</button>
-                <button id="nextFileBtn" class="btn btn-sm btn-icon" title="Tệp kế tiếp" type="button" disabled>▶</button>
+                <button id="prevFileBtn" class="btn btn-sm btn-icon btn-secondary" title="Tệp trước đó (Phím [)" type="button" disabled>◀</button>
+                <button id="nextFileBtn" class="btn btn-sm btn-icon btn-secondary" title="Tệp kế tiếp (Phím ])" type="button" disabled>▶</button>
               </div>
             </div>
+
             <!-- Horizontal File Pills Ribbon -->
             <div id="singleFilePills" class="single-file-pills">
-              <span style="font-size: 0.78rem; color: var(--text-dim); padding: 4px 0;">Chưa có tệp trong hàng đợi. Kéo thả tệp vào đây hoặc thêm ở tab Hàng loạt để so sánh.</span>
+              <span style="font-size: 0.78rem; color: var(--text-dim); padding: 4px 0;">Chưa có tệp trong hàng đợi. Kéo thả tệp vào đây hoặc nhấn <b>Ctrl + V</b> để so sánh.</span>
             </div>
 
-            <div id="comparePlayer" class="compare-player">
-              <div class="compare-pane" id="originalPane" style="position: relative;">
+            <!-- Compare Mode Switcher Toolbar -->
+            <div class="compare-toolbar">
+              <div class="compare-modes">
+                <button id="modeSplitBtn" class="compare-mode-btn active" type="button" title="Kéo thanh chia đôi để so sánh Trước / Sau">
+                  ◫ Thanh trượt (Split Slider)
+                </button>
+                <button id="modeSideBtn" class="compare-mode-btn" type="button" title="Hiển thị song song hai bên">
+                  ▥ Hai bên (Side-by-Side)
+                </button>
+                <button id="modeHoldBtn" class="compare-mode-btn" type="button" title="Nhấn giữ chuột để xem ảnh gốc">
+                  👁 Nhấn giữ (Hold View)
+                </button>
+              </div>
+              <span id="compareModeHint" class="compare-hint">Kéo thanh chia đôi để so sánh trực quan Trước / Sau</span>
+            </div>
+
+            <!-- The Compare Player with Split Slider -->
+            <div id="comparePlayer" class="compare-player mode-split" style="--split-pos: 50%;">
+              <!-- Original (Before) Pane -->
+              <div class="compare-pane compare-pane-before" id="originalPane">
                 <video id="originalVideo" playsinline preload="metadata"></video>
-                <img id="originalImg" style="display: none; width: 100%; height: 100%; object-fit: contain;" alt="Ảnh gốc">
-                <canvas id="selectionCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10; cursor: crosshair; display: none;"></canvas>
+                <img id="originalImg" style="display: none;" alt="Ảnh gốc">
+                <canvas id="selectionCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 20; cursor: crosshair; display: none;"></canvas>
                 <span class="badge before">Trước (Gốc)</span>
                 <div id="originalEmpty" class="empty">Chọn 1 video hoặc ảnh để xem trước</div>
               </div>
-              <div class="compare-pane">
+
+              <!-- Processed (After) Pane -->
+              <div class="compare-pane compare-pane-after" id="processedPane">
                 <video id="processedVideo" playsinline preload="metadata" muted></video>
-                <img id="processedImg" style="display: none; width: 100%; height: 100%; object-fit: contain;" alt="Đã xoá watermark">
+                <img id="processedImg" style="display: none;" alt="Đã xoá watermark">
                 <span id="afterBadge" class="badge after" hidden>Sau (Đã khử)</span>
                 <div id="processedEmpty" class="empty">Kết quả sau khi xoá watermark sẽ hiển thị ở đây</div>
               </div>
+
+              <!-- Draggable Split Divider Line & Handle -->
+              <div id="splitDivider" class="split-divider">
+                <div class="split-line"></div>
+                <div class="split-handle" title="Kéo qua lại để so sánh Trước / Sau">
+                  <span>◀</span>
+                  <span class="split-handle-grip">❙❙</span>
+                  <span>▶</span>
+                </div>
+              </div>
             </div>
+
+            <!-- Timeline Video Controls -->
             <div class="compare-controls">
               <button id="playPauseBtn" class="play-toggle" type="button" data-playing="false" aria-label="Phát" disabled></button>
               <input id="scrubber" type="range" min="0" max="1000" value="0" aria-label="Tiến độ phát" disabled>
@@ -1371,12 +1772,15 @@
 
         <!-- Right: Single Inspector Controls & HUD Info -->
         <aside class="single-sidebar">
-          <div class="panel" style="margin-bottom: 16px;">
-            <div class="panel-head">Bảng điều khiển</div>
+          <div class="panel" style="margin-bottom: 14px;">
+            <div class="panel-head">Bảng điều khiển Studio</div>
             <div class="controls-panel">
               <div id="autoPresetSummary" hidden style="display:none;"></div>
-              <div class="queue-item-progress" style="height: 6px;"><span id="progressBar" style="display:block; height:100%; width:0%; background:linear-gradient(90deg, #00f2fe, #4facfe); border-radius: 999px;"></span></div>
-              <div id="status" class="status-box" data-tone="info">Sẵn sàng</div>
+              <div class="queue-item-progress" style="height: 6px;"><span id="progressBar" style="display:block; height:100%; width:0%; background:linear-gradient(90deg, #00f2fe, #38bdf8); border-radius: 999px;"></span></div>
+              <div id="status" class="status-box" data-tone="info">
+                <span>● Sẵn sàng</span>
+              </div>
+
               <div class="control-group" style="margin-top: 4px; margin-bottom: 4px;">
                 <label class="check-label" style="font-size: 0.82rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 8px;">
                   <input id="allowLowConfidence" type="checkbox" checked style="accent-color: #00f2fe;">
@@ -1385,10 +1789,10 @@
               </div>
 
               <!-- Smart Box / Custom Region Tool -->
-              <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 4px;">
+              <div style="background: rgba(18, 29, 50, 0.65); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 4px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                  <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Vùng chọn watermark</span>
-                  <button id="toggleBoxBtn" class="btn btn-sm" style="height: 26px; padding: 0 10px; font-size: 0.74rem;" type="button">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #fff;">Khoanh vùng thủ công</span>
+                  <button id="toggleBoxBtn" class="btn btn-sm btn-secondary" style="height: 26px; padding: 0 10px; font-size: 0.74rem;" type="button">
                     ✏️ Vẽ vùng chọn
                   </button>
                 </div>
@@ -1398,10 +1802,14 @@
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button id="detectBtn" type="button">Quét vị trí</button>
-                <button id="resetBtn" type="button">Đặt lại</button>
-                <button id="processBtn" class="btn btn-primary" style="grid-column: span 2; height: 42px; font-size: 0.92rem;" type="button">Bắt đầu xử lý</button>
-                <a id="downloadBtn" class="download-link" style="grid-column: span 2; height: 40px;" aria-disabled="true">Tải kết quả</a>
+                <button id="detectBtn" class="btn btn-secondary" type="button">Quét vị trí</button>
+                <button id="resetBtn" class="btn btn-secondary" type="button">Đặt lại</button>
+                <button id="processBtn" class="btn btn-primary" style="grid-column: span 2; height: 44px; font-size: 0.94rem;" type="button">
+                  ⚡ Bắt đầu xử lý (AI Clean)
+                </button>
+                <a id="downloadBtn" class="download-link" style="grid-column: span 2; height: 42px;" aria-disabled="true">
+                  ⬇ Tải file kết quả
+                </a>
               </div>
 
               <!-- Legacy hidden compatibility controls for SDK / tests -->
@@ -1425,8 +1833,8 @@
             </div>
           </div>
 
-          <div class="panel" style="margin-bottom: 16px;">
-            <div class="panel-head">Thông tin tệp</div>
+          <div class="panel" style="margin-bottom: 14px;">
+            <div class="panel-head">Thông tin tệp chi tiết</div>
             <div id="metadata"></div>
           </div>
 
@@ -1435,6 +1843,61 @@
             <div id="detection"></div>
           </div>
         </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Hotkeys Modal -->
+  <div id="hotkeysModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⌨ Danh sách Phím tắt Pro Studio</h3>
+        <button id="closeHotkeysBtn" class="btn btn-sm btn-icon btn-secondary" type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Dán ảnh trực tiếp từ Clipboard</span>
+          <div class="hotkey-keys"><kbd>Ctrl</kbd> + <kbd>V</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Phát / Tạm dừng video đang so sánh</span>
+          <div class="hotkey-keys"><kbd>Space</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Xem tệp trước đó trong hàng đợi</span>
+          <div class="hotkey-keys"><kbd>[</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Xem tệp kế tiếp trong hàng đợi</span>
+          <div class="hotkey-keys"><kbd>]</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Tải về tệp kết quả đang xem</span>
+          <div class="hotkey-keys"><kbd>D</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Bật / Tắt vẽ khung chọn watermark thủ công</span>
+          <div class="hotkey-keys"><kbd>B</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Nhấn giữ để xem ảnh gốc (ở chế độ Hold)</span>
+          <div class="hotkey-keys"><kbd>H</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Chuyển sang tab Xử lý hàng loạt</span>
+          <div class="hotkey-keys"><kbd>1</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Chuyển sang tab So sánh chi tiết</span>
+          <div class="hotkey-keys"><kbd>2</kbd></div>
+        </div>
+        <div class="hotkey-row">
+          <span class="hotkey-desc">Đóng cửa sổ phím tắt / Thoát vẽ vùng chọn</span>
+          <div class="hotkey-keys"><kbd>Esc</kbd></div>
+        </div>
       </div>
     </div>
   </div>
