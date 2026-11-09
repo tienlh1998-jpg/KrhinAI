@@ -1,0 +1,21 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts and test screenshots
+build/*.png
+build/*.mp4
+build/*.json
+!build/.gitkeep
+
+# Temporary backups
+*.bak
+backups/

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Krhin AI - Xoá Watermark Ảnh Siêu Nét</title>
+  <meta name="description" content="Krhin AI - Phần mềm xoá logo hình mờ Gemini AI và Veo Video với độ nét hoàn hảo, 100% xử lý cục bộ trên máy tính.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-subtle: #0f172a;
+      --panel: #131d33;
+      --panel-hover: #182440;
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --panel-border-hover: rgba(56, 189, 248, 0.3);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --primary-glow: rgba(56, 189, 248, 0.25);
+      
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      
+      --danger: #f43f5e;
+      --danger-hover: #e11d48;
+      --warn: #f59e0b;
+      --info: #6366f1;
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 32px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 0%, #172554 0%, var(--bg) 65%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      width: min(1440px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--panel-border);
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #10b981, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .brand-title h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #ffffff, #6ee7b7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-title p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tech-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--panel-border);
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .tech-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* Main Mode Switcher Bar */
+    .mode-switcher-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding: 6px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(16px);
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mode-tab-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      background: transparent;
+      border: 1px solid transparent;
+    }
+
+    .mode-tab-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .mode-tab-link.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(56, 189, 248, 0.25));
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+    }
+
+    .mode-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-tag.active {
+      background: rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      position: relative;
+      border: 2px dashed rgba(56, 189, 248, 0.3);
+      background: rgba(19, 29, 51, 0.6);
+      border-radius: var(--radius-lg);
+      padding: 42px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+      margin-bottom: 28px;
+    }
+
+    .dropzone:hover, .dropzone.border-primary, .dropzone.bg-emerald-50 {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .dropzone-icon {
+      font-size: 3rem;
+      margin-bottom: 4px;
+      filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
+    }
+
+    .dropzone strong {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .dropzone p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 600px;
+    }
+
+    /* Panels & Comparison */
+    .panel {
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .panel-head {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .panel-head h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meta-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .meta-badges span {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--panel-border);
+      color: #cbd5e1;
+    }
+
+    .meta-badges span b {
+      color: var(--primary);
+    }
+
+    .meta-badges span.text-primary b {
+      color: var(--accent);
+    }
+
+    .meta-badges span.text-warning b {
+      color: var(--warn);
+    }
+
+    /* Comparison Area */
+    .comparison-wrapper {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .canvas-card {
+      background: #060911;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--panel-border);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .canvas-viewport {
+      position: relative;
+      width: 100%;
+      min-height: 500px;
+      max-height: 72vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #0f172a 10%, #060911 90%);
+      user-select: none;
+      overflow: hidden;
+      padding: 16px;
+    }
+
+    #comparisonContainer {
+      position: relative;
+      max-width: 100%;
+      max-height: 68vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #originalImage {
+      display: block;
+      max-width: 100%;
+      max-height: 65vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+    }
+
+    #processedOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 50%;
+      overflow: hidden;
+      border-right: 2px solid var(--accent);
+      box-shadow: 2px 0 12px rgba(16, 185, 129, 0.4);
+      z-index: 10;
+    }
+
+    #processedImage {
+      display: block;
+      height: 100%;
+      max-width: none;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    #sliderHandle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 40px;
+      margin-left: -20px;
+      z-index: 20;
+      cursor: col-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .handle-knob {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.6), 0 2px 6px rgba(0,0,0,0.5);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .badge-label {
+      position: absolute;
+      top: 14px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      backdrop-filter: blur(12px);
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    .badge-label.left {
+      left: 14px;
+      background: rgba(16, 185, 129, 0.85);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-label.right {
+      right: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--panel-border);
+      color: var(--text-muted);
+    }
+
+    /* Actions Sidebar */
+    .actions-panel {
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--panel-border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .actions-panel h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid var(--panel-border);
+    }
+    .btn-secondary:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--panel-border);
+    }
+    .btn-reset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    #statusMessage {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    #statusMessage.warn {
+      color: var(--warn);
+    }
+
+    /* Multi-Batch Grid */
+    .batch-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .batch-card {
+      background: #090d16;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .batch-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 180px;
+      background: #000;
+      position: relative;
+    }
+
+    .batch-pane {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .batch-pane.processed {
+      border-left: 1px solid var(--panel-border);
+    }
+
+    .batch-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .batch-pane-label {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      padding: 2px 6px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      z-index: 5;
+    }
+
+    .batch-main {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .batch-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+
+    .batch-status {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .batch-status.text-primary { color: var(--accent); }
+    .batch-status.text-warning { color: var(--warn); }
+
+    .batch-actions {
+      padding: 0 14px 14px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .batch-button {
+      flex: 1;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .batch-button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .batch-button.secondary {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid var(--panel-border);
+    }
+
+    /* Loading Overlay */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(16, 185, 129, 0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 900px) {
+      .comparison-wrapper { grid-template-columns: 1fr; }
+      .actions-panel { position: static; }
+      header { flex-direction: column; align-items: flex-start; }
+      .mode-switcher-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">✨</div>
+        <div class="brand-title">
+          <h1>Krhin AI</h1>
+          <p>Phần mềm Xoá Watermark Ảnh & Video Bằng AI — 100% Cục Bộ</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <div class="tech-pill"><span class="dot"></span> 100% Xử lý Local</div>
+        <div class="tech-pill">⚡ Reverse Alpha Blending</div>
+      </div>
+    </header>
+
+    <!-- Mode Switcher Navigation -->
+    <div class="mode-switcher-bar">
+      <div class="mode-tabs">
+        <a href="./dev-preview.html" class="mode-tab-link active">
+          <span class="mode-icon">🖼️</span>
+          <span>Xoá Watermark Ảnh</span>
+          <span class="mode-tag active">Lossless</span>
+        </a>
+        <a href="./video-preview.html" class="mode-tab-link">
+          <span class="mode-icon">🎬</span>
+          <span>Xoá Watermark Video</span>
+          <span class="mode-tag">Batch Queue</span>
+        </a>
+      </div>
+      <div class="tech-pill" style="margin-right: 8px;">
+        💡 Kéo thả file video sẽ tự động nạp sang chế độ Xử lý Video
+      </div>
+    </div>
+
+    <!-- AI Deep Learning Banner -->
+    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(56, 189, 248, 0.15)); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 1.8rem;">🚀</span>
+        <div>
+          <strong style="color: #38bdf8; font-size: 0.95rem;">Đã có chế độ AI FDnCNN Deep Learning (Siêu Sạch 100%, Xoá sạch cả 2 logo)</strong>
+          <p style="font-size: 0.84rem; color: #94a3b8; margin-top: 2px;">Để xoá sạch hoàn toàn không còn bóng mờ và hỗ trợ nhiều logo, hãy chuyển sang chế độ AI Deep Learning.</p>
+        </div>
+      </div>
+      <a href="./video-preview.html" class="btn btn-primary" style="white-space: nowrap; padding: 8px 18px; text-decoration: none; font-weight: 600;">
+        ⚡ Mở Chế Độ AI Siêu Nét
+      </a>
+    </div>
+
+    <!-- Dropzone Area -->
+    <div id="uploadArea" class="dropzone">
+      <span class="dropzone-icon">🖼️</span>
+      <strong>Kéo thả hoặc Nhấp vào đây để chọn Ảnh</strong>
+      <p>Hỗ trợ chọn 1 ảnh để so sánh chi tiết Trước/Sau hoặc chọn nhiều ảnh (JPG, PNG, WebP) để xử lý hàng loạt.</p>
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime,video/*" multiple hidden />
+    </div>
+
+    <!-- Single Preview Section -->
+    <section id="singlePreview" style="display: none;">
+      <div class="comparison-wrapper">
+        <div class="canvas-card">
+          <div class="panel-head">
+            <h3>🔍 So sánh Trước / Sau khi Xoá Watermark</h3>
+            <div class="meta-badges">
+              <div id="originalInfo"></div>
+              <div id="processedInfo" style="display: none;"></div>
+            </div>
+          </div>
+
+          <div class="canvas-viewport">
+            <div id="comparisonContainer">
+              <img id="originalImage" draggable="false" alt="Ảnh gốc" />
+              <div id="processedOverlay" style="display: none;">
+                <img id="processedImage" draggable="false" alt="Sau xử lý" />
+              </div>
+              <div id="sliderHandle" style="left: 50%; display: none;">
+                <div class="handle-knob">↔</div>
+              </div>
+              <span class="badge-label left">Sau khi xoá Watermark</span>
+              <span class="badge-label right">Ảnh gốc có Watermark</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-panel">
+          <h4>Thao tác</h4>
+          <button id="copyBtn" class="btn btn-primary" type="button" style="display: none;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m-1 10H8m4-3H8m1.5 6H8"></path></svg>
+            <span>Sao chép ảnh</span>
+          </button>
+
+          <button id="downloadBtn" class="btn btn-secondary" type="button" style="display: none;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>Tải ảnh về máy</span>
+          </button>
+
+          <button id="resetBtn" class="btn btn-reset" type="button">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>Chọn ảnh khác</span>
+          </button>
+
+          <div id="statusMessage"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Multi-Image Batch Preview Section -->
+    <section id="multiPreview" class="panel" style="display: none;">
+      <div class="panel-head">
+        <div>
+          <h3>📁 Xử lý Hàng loạt Ảnh (Batch Queue)</h3>
+          <p id="progressText" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Tiến độ xử lý: 0/0</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="downloadBatchZipBtn" class="btn btn-primary" type="button" style="width: auto; padding: 8px 18px;" disabled>
+            📦 Tải tất cả (.ZIP)
+          </button>
+          <button id="batchResetBtn" class="btn btn-reset" type="button" style="width: auto; padding: 8px 16px;">
+            Chọn tệp khác
+          </button>
+        </div>
+      </div>
+      <div id="imageList" class="batch-list"></div>
+    </section>
+  </div>
+
+  <div id="loadingOverlay">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="spinner"></div>
+      <p id="loadingText" style="font-weight: 600; color: #fff;">Đang xử lý ảnh...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

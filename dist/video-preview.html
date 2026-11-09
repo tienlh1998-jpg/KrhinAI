@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Krhin AI - Xoá Watermark Ảnh & Video</title>
+  <link rel="icon" type="image/x-icon" href="/app.ico">
+  <meta name="description" content="Krhin AI - Công cụ xoá logo hình mờ Gemini AI và Veo Video chất lượng cao, 100% xử lý cục bộ trên máy tính.">
+  <style>
+
+    :root {
+      --bg: #060913;
+      --bg-subtle: #0a101d;
+      --panel: rgba(13, 21, 39, 0.75);
+      --panel-solid: #0d1527;
+      --panel-hover: rgba(24, 38, 68, 0.85);
+      --panel-border: rgba(56, 189, 248, 0.12);
+      --panel-border-hover: rgba(56, 189, 248, 0.4);
+      --panel-border-glow: rgba(0, 242, 254, 0.25);
+      
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --primary: #00f2fe;
+      --primary-end: #4facfe;
+      --primary-hover: #38bdf8;
+      --primary-glow: rgba(0, 242, 254, 0.35);
+      
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.35);
+      
+      --vip-gold: #f59e0b;
+      --vip-orange: #ef4444;
+      --vip-purple: #8b5cf6;
+      --vip-pink: #ec4899;
+      
+      --danger: #f43f5e;
+      --danger-hover: #e11d48;
+      --warn: #f59e0b;
+      --info: #6366f1;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 10px 30px -4px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 20px 50px -8px rgba(0, 0, 0, 0.7);
+      --shadow-glow: 0 0 35px rgba(0, 242, 254, 0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      min-height: 100vh;
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.35) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+        var(--bg);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      width: min(1520px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 12px 0 24px;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(13, 21, 39, 0.5); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0, 242, 254, 0.6); }
+
+    /* VIP Header Compact */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 18px;
+      background: rgba(13, 21, 39, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #8b5cf6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .version-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .brand-title p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--panel-border);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      backdrop-filter: blur(12px);
+    }
+
+    .tech-pill.primary {
+      background: rgba(0, 242, 254, 0.08);
+      border-color: rgba(0, 242, 254, 0.25);
+      color: var(--primary);
+    }
+
+    .tech-pill.accent {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: var(--accent);
+    }
+
+    .tech-pill .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* VIP Navigation Tabs Bar Compact */
+    .tabs-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(13, 21, 39, 0.7);
+      backdrop-filter: blur(16px);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--panel-border);
+    }
+
+    .tab-btn {
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.22), rgba(99, 102, 241, 0.22));
+      border: 1px solid rgba(0, 242, 254, 0.45);
+      box-shadow: 0 2px 10px rgba(0, 242, 254, 0.2);
+    }
+
+    .tab-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      background: rgba(0, 242, 254, 0.25);
+      color: #7dd3fc;
+    }
+
+    .mode-hint-pill {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      background: rgba(13, 21, 39, 0.6);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--panel-border);
+    }
+
+    /* Main Grid Layout */
+    .view-container { display: none; }
+    .view-container.active { display: block; }
+
+    .batch-layout, .single-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    /* Glass Panels Compact */
+    .panel {
+      background: var(--panel);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel:hover {
+      border-color: var(--panel-border-hover);
+    }
+
+    .panel-head {
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--panel-border);
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+      color: #f1f5f9;
+    }
+
+    /* Stats Overview Cards Compact */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #334155, transparent);
+    }
+
+    .stat-card.primary::before { background: linear-gradient(90deg, #00f2fe, #4facfe); }
+    .stat-card.accent::before { background: linear-gradient(90deg, #10b981, #059669); }
+    .stat-card.vip::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+
+    .stat-card .label {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .stat-card .value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-card.accent .value { color: #34d399; }
+    .stat-card.primary .value { color: #38bdf8; }
+    .stat-card.vip .value { color: #c084fc; }
+
+    /* Dropzone Compact & Sleek */
+    .dropzone {
+      border: 1.5px dashed rgba(56, 189, 248, 0.3);
+      background: rgba(13, 21, 39, 0.55);
+      backdrop-filter: blur(16px);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .dropzone:hover, .dropzone[data-dragging="true"] {
+      border-color: var(--primary);
+      background: rgba(0, 242, 254, 0.06);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+
+    .dropzone-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .dropzone-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .dropzone strong {
+      display: block;
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .dropzone p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .dropzone-chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dropzone-chip {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+    }
+
+    /* Queue Toolbar Compact */
+    .queue-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--panel-border);
+      flex-wrap: wrap;
+    }
+
+    .queue-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons Compact */
+    button, .btn, .download-link {
+      font: inherit;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      padding: 0 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    button:hover:not(:disabled), .btn:hover:not(:disabled), .download-link:hover:not([aria-disabled="true"]) {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--panel-border-hover);
+      color: #fff;
+    }
+
+    button:active:not(:disabled), .btn:active:not(:disabled) { transform: scale(0.98); }
+
+    button:disabled, .btn:disabled, .download-link[aria-disabled="true"] {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary, button.primary {
+      background: linear-gradient(135deg, #0284c7 0%, #00f2fe 100%);
+      border: none;
+      color: #060913;
+      font-weight: 800;
+      box-shadow: 0 2px 12px rgba(0, 242, 254, 0.35);
+    }
+    .btn-primary:hover:not(:disabled), button.primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #38bdf8 0%, #4facfe 100%);
+      box-shadow: 0 4px 18px rgba(0, 242, 254, 0.5);
+      color: #060913;
+    }
+
+    .btn-success, .download-link {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      border: none;
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    .btn-success:hover:not(:disabled), .download-link:hover:not([aria-disabled="true"]) {
+      background: linear-gradient(135deg, #047857 0%, #34d399 100%);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.3);
+      color: #fda4af;
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(244, 63, 94, 0.25);
+      border-color: #f43f5e;
+      color: #fff;
+    }
+
+    .btn-sm {
+      height: 28px;
+      padding: 0 10px;
+      font-size: 0.76rem;
+    }
+
+    .btn-icon {
+      width: 28px;
+      height: 28px;
+      padding: 0 !important;
+      font-size: 0.85rem;
+    }
+
+    /* Scrollable Queue List with Fixed Height */
+    .queue-list {
+      display: flex;
+      flex-direction: column;
+      height: 280px;
+      max-height: 280px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .queue-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 40px 16px;
+      color: var(--text-dim);
+      text-align: center;
+      height: 100%;
+    }
+    .queue-empty .icon { font-size: 2.2rem; opacity: 0.5; }
+
+    .queue-item {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--panel-border);
+      transition: background 0.15s ease;
+    }
+    .queue-item:last-child { border-bottom: none; }
+    .queue-item:hover { background: rgba(255, 255, 255, 0.03); }
+
+    .queue-item-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .queue-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .queue-item-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .queue-item-meta {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .queue-item-progress {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-top: 2px;
+    }
+    .queue-item-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+
+    .queue-item-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      text-align: center;
+    }
+    .queue-item-status.text-dim { color: #94a3b8; background: rgba(148, 163, 184, 0.15); }
+    .queue-item-status.text-primary { color: #38bdf8; background: rgba(56, 189, 248, 0.18); border: 1px solid rgba(56, 189, 248, 0.35); }
+    .queue-item-status.text-accent { color: #34d399; background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.35); }
+    .queue-item-status.text-danger { color: #fb7185; background: rgba(244, 63, 94, 0.18); border: 1px solid rgba(244, 63, 94, 0.35); }
+
+    .queue-item-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    /* Controls Panel & Settings Cards High-Contrast VIP */
+    .controls-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px;
+    }
+
+    .setting-card {
+      background: rgba(22, 34, 56, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .setting-card:hover {
+      background: rgba(26, 42, 70, 0.85);
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .setting-card-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: -0.01em;
+    }
+
+    .setting-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(0, 242, 254, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: #1e293b !important;
+      color: #ffffff !important;
+      padding: 0 12px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+    select:hover {
+      background: #28374f !important;
+      border-color: #38bdf8;
+    }
+    select:focus, input[type="number"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+    select option {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 8px 12px;
+      font-weight: 600;
+    }
+
+    input[type="file"] {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      background: transparent !important;
+      border: 1px dashed rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-sm);
+      padding: 6px;
+      box-shadow: none;
+    }
+    input[type="file"]::file-selector-button {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 0.74rem;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: all 0.2s ease;
+    }
+    input[type="file"]::file-selector-button:hover {
+      background: rgba(0, 242, 254, 0.25);
+      border-color: #00f2fe;
+    }
+
+    .check-card {
+      background: rgba(22, 34, 56, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .check-card:hover {
+      background: rgba(26, 42, 70, 0.8);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    .check-card input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #00f2fe;
+      cursor: pointer;
+    }
+    .check-card span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.3;
+    }
+
+    /* Single Comparison Player Studio */
+    .compare-player {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #02040a;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      overflow: hidden;
+    }
+
+    .compare-pane {
+      position: relative;
+      overflow: hidden;
+      background: #02040a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .compare-pane video, .compare-pane img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .compare-pane[hidden], .badge[hidden], .empty[hidden] { display: none; }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 6;
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      background: rgba(6, 9, 19, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--panel-border);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .badge.before {
+      border-color: rgba(244, 63, 94, 0.5);
+      color: #fda4af;
+    }
+    .badge.after {
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #6ee7b7;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--text-dim);
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-align: center;
+      padding: 16px;
+      z-index: 4;
+      background: rgba(6, 9, 19, 0.95);
+    }
+
+    .compare-controls {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid var(--panel-border);
+    }
+
+    .play-toggle {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      color: #060913;
+      border: none;
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+    .play-toggle::before {
+      content: "";
+      width: 0; height: 0;
+      margin-left: 2px;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 6px solid currentColor;
+    }
+    .play-toggle[data-playing="true"]::before,
+    .play-toggle[data-playing="true"]::after {
+      content: "";
+      width: 2px; height: 9px;
+      margin: 0 1px;
+      border: 0;
+      background: currentColor;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #1e293b;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+
+    .time-label {
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Metadata HUD Compact */
+    dl { margin: 0; display: grid; }
+    dl div {
+      min-height: 32px;
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      font-size: 0.8rem;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    dl div:last-child { border-bottom: none; }
+    dt { color: var(--text-muted); font-weight: 600; }
+    dd { color: #f1f5f9; font-family: 'JetBrains Mono', monospace; font-weight: 600; overflow-wrap: anywhere; }
+
+    .status-box {
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      background: rgba(10, 16, 29, 0.75);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border: 1px solid var(--panel-border);
+    }
+    .status-box[data-tone="error"] { color: #fda4af; background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.35); }
+    .status-box[data-tone="warn"] { color: #fde68a; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
+    .status-box[data-tone="success"] { color: #6ee7b7; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); }
+
+    /* Single Inspector File Switcher Bar & Pills */
+    .single-file-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 16px;
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid var(--panel-border);
+      flex-wrap: wrap;
+    }
+
+    .single-file-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .file-bar-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .single-file-select {
+      flex: 1;
+      max-width: 440px;
+      height: 32px !important;
+      background: #1e293b !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      font-size: 0.8rem !important;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .single-file-select:hover {
+      border-color: var(--primary) !important;
+    }
+
+    .single-file-bar-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .single-file-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      background: rgba(10, 16, 29, 0.65);
+      border-bottom: 1px solid var(--panel-border);
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+    }
+
+    .file-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .file-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .file-pill.active {
+      background: rgba(0, 242, 254, 0.18);
+      border-color: #00f2fe;
+      color: #38bdf8;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+      font-weight: 700;
+    }
+
+    .file-pill-icon {
+      font-size: 0.92rem;
+    }
+
+    .file-pill-name {
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .status-dot.done { background: #10b981; box-shadow: 0 0 6px #10b981; }
+    .status-dot.active { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; animation: pulseDot 1.5s infinite; }
+    .status-dot.pending { background: #94a3b8; }
+    .status-dot.error { background: #f43f5e; box-shadow: 0 0 6px #f43f5e; }
+
+    /* Responsive */
+    @media (max-width: 1080px) {
+      .batch-layout, .single-layout { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .dropzone { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .queue-item { grid-template-columns: 32px 1fr; gap: 6px; }
+      .queue-item-meta, .queue-item-actions { grid-column: span 2; }
+      header { flex-direction: column; align-items: flex-start; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon">💎</div>
+        <div class="brand-title">
+          <div class="brand-title-row">
+            <h1>Krhin AI</h1>
+            <span class="version-badge">v1.1</span>
+          </div>
+          <p>Xoá watermark ảnh &amp; video — Xử lý 100% offline</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <div class="tech-pill accent"><span class="dot"></span> AI FDnCNN</div>
+        <div class="tech-pill primary">WebGPU / WASM SIMD</div>
+        <div class="tech-pill">100% Offline</div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs Bar -->
+    <div class="tabs-nav-bar">
+      <div class="tabs-nav">
+        <button id="tabBatchBtn" class="tab-btn active" type="button">
+          📁 Xử lý hàng loạt
+          <span id="queueCountBadge" class="tab-badge">0</span>
+        </button>
+        <button id="tabSingleBtn" class="tab-btn" type="button">
+          🔍 So sánh chi tiết
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 1: BATCH PROCESSING -->
+    <div id="batchView" class="view-container active">
+      <!-- Stats Overview Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="label">Tổng số tệp</span>
+          <span id="statTotal" class="value">0</span>
+        </div>
+        <div class="stat-card primary">
+          <span class="label">Đang xử lý</span>
+          <span id="statProcessing" class="value">0</span>
+        </div>
+        <div class="stat-card accent">
+          <span class="label">Đã hoàn thành</span>
+          <span id="statCompleted" class="value">0</span>
+        </div>
+        <div class="stat-card vip">
+          <span class="label">Tổng tiến độ</span>
+          <span id="statOverallProgress" class="value">0%</span>
+        </div>
+      </div>
+
+      <div class="batch-layout">
+        <!-- Left: Dropzone & Queue List -->
+        <div class="batch-main">
+          <!-- Dropzone -->
+          <div id="dropzone" class="dropzone" data-dragging="false" role="button" tabindex="0">
+            <div class="dropzone-left">
+              <span class="dropzone-icon">📥</span>
+              <div>
+                <strong>Kéo thả ảnh hoặc video vào đây</strong>
+                <p>Hỗ trợ JPG, PNG, WebP, MP4, MOV, WebM (chọn nhiều tệp cùng lúc)</p>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="button" onclick="document.getElementById('fileInput').click()">
+              Chọn tệp...
+            </button>
+            <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime,video/*" multiple hidden>
+          </div>
+
+          <!-- Queue Panel -->
+          <div class="panel">
+            <div class="queue-toolbar">
+              <div class="panel-head-title" style="font-weight: 700; font-size: 0.95rem; color: #fff;">
+                Danh sách tệp trong hàng đợi
+              </div>
+              <div class="queue-actions">
+                <button id="startAllBtn" class="btn btn-primary" type="button">
+                  ▶ Bắt đầu xử lý
+                </button>
+                <button id="pauseAllBtn" class="btn" type="button" disabled>
+                  ⏸ Tạm dừng
+                </button>
+                <button id="downloadAllZipBtn" class="btn btn-success" type="button" disabled>
+                  📦 Tải ZIP tất cả
+                </button>
+                <button id="clearCompletedBtn" class="btn btn-sm" type="button">
+                  Dọn file xong
+                </button>
+                <button id="clearAllBtn" class="btn btn-sm btn-danger" type="button">
+                  Xoá tất cả
+                </button>
+              </div>
+            </div>
+
+            <!-- Queue Items Container -->
+            <div id="queueList" class="queue-list">
+              <div id="queueEmpty" class="queue-empty">
+                <div class="icon">📥</div>
+                <p>Chưa có tệp nào trong hàng đợi.<br>Hãy kéo thả ảnh hoặc video vào khung phía trên để bắt đầu!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Batch Settings Panel -->
+        <aside class="batch-sidebar">
+          <div class="panel">
+            <div class="panel-head">Cài đặt xử lý</div>
+            <div class="controls-panel">
+              <!-- Concurrency Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Số luồng xử lý</span>
+                  <span id="concurrencyLabel" class="setting-badge">2 luồng</span>
+                </div>
+                <select id="concurrencySelect">
+                  <option value="1">1 luồng (Tiết kiệm)</option>
+                  <option value="2" selected>2 luồng (Khuyên dùng)</option>
+                  <option value="3">3 luồng (Máy mạnh)</option>
+                  <option value="4">4 luồng (Máy rất mạnh)</option>
+                </select>
+              </div>
+
+              <!-- Denoise Model Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Mô hình khử nhiễu (Denoise)</span>
+                </div>
+                <select id="batchDenoiseBackend">
+                  <option value="allenk-fdncnn-browser-spike" selected>AI FDnCNN (Khuyên dùng)</option>
+                  <option value="canvas-edge-denoise">Canvas Edge (Nhanh)</option>
+                  <option value="canvas-soft">Canvas Soft</option>
+                  <option value="none">Tắt khử nhiễu</option>
+                </select>
+              </div>
+
+              <!-- Bitrate Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Bitrate video xuất ra</span>
+                </div>
+                <select id="batchBitrate">
+                  <option value="8">8 Mbps (Tiết kiệm dung lượng)</option>
+                  <option value="12" selected>12 Mbps (Mặc định)</option>
+                  <option value="20">20 Mbps (Chất lượng cao)</option>
+                  <option value="35">35 Mbps (Rất cao)</option>
+                </select>
+              </div>
+
+              <!-- Export & Compression Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Tối ưu xuất file & Nén</span>
+                  <span id="batchQualityBadge" class="setting-badge">92%</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <div>
+                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Tỷ lệ phân giải ảnh:</label>
+                    <select id="batchScaleSelect">
+                      <option value="1" selected>1x (Kích thước gốc)</option>
+                      <option value="1.5">1.5x (Phóng to sắc nét)</option>
+                      <option value="2">2x (Tăng gấp đôi 2K/4K)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Định dạng xuất ảnh:</label>
+                    <select id="batchImageFormat">
+                      <option value="image/webp" selected>WebP (Khuyên dùng - Siêu nhẹ)</option>
+                      <option value="image/png">PNG (Không nén - Chuẩn gốc)</option>
+                      <option value="image/jpeg">JPG (Tương thích cao)</option>
+                    </select>
+                  </div>
+                  <div id="qualitySliderGroup">
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 2px;">
+                      <span>Chất lượng nén:</span>
+                      <span id="batchQualityVal" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;">92%</span>
+                    </div>
+                    <input id="batchQualityRange" type="range" min="0.70" max="1.0" step="0.02" value="0.92" style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Branding / Watermark Stamper Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Đóng dấu bản quyền riêng</span>
+                  <label class="check-label" style="cursor: pointer; margin: 0; display: flex; align-items: center;">
+                    <input id="stampEnableCheck" type="checkbox" style="accent-color: #00f2fe; cursor: pointer; width: 16px; height: 16px;">
+                  </label>
+                </div>
+                <div id="stampSettingsContainer" style="display: none; flex-direction: column; gap: 8px; margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(56, 189, 248, 0.15);">
+                  <div>
+                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Loại dấu:</label>
+                    <select id="stampTypeSelect">
+                      <option value="text" selected>Chữ ký text (@channel)</option>
+                      <option value="image">Logo ảnh (PNG / WebP)</option>
+                    </select>
+                  </div>
+                  <div id="stampTextGroup">
+                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Nội dung chữ ký:</label>
+                    <input id="stampTextInput" type="text" placeholder="@KenhCuaBan" value="@KrhinAI">
+                  </div>
+                  <div id="stampImageGroup" style="display: none;">
+                    <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Chọn logo PNG trong suốt:</label>
+                    <input id="stampLogoInput" type="file" accept="image/png,image/webp,image/jpeg" style="width: 100%;">
+                    <div id="stampLogoPreview" style="display: none; font-size: 0.72rem; color: #34d399; margin-top: 2px;">✓ Đã tải logo</div>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <div>
+                      <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Vị trí đặt:</label>
+                      <select id="stampPositionSelect" style="font-size: 0.78rem;">
+                        <option value="bottom-right" selected>Dưới - Phải</option>
+                        <option value="bottom-left">Dưới - Trái</option>
+                        <option value="top-right">Trên - Phải</option>
+                        <option value="top-left">Trên - Trái</option>
+                        <option value="center">Chính giữa</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-bottom: 2px;">Kích cỡ:</label>
+                      <select id="stampSizeSelect" style="font-size: 0.78rem;">
+                        <option value="small">Nhỏ</option>
+                        <option value="medium" selected>Vừa</option>
+                        <option value="large">Lớn</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 2px;">
+                      <span>Độ mờ dấu:</span>
+                      <span id="stampOpacityVal" style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-weight: 700;">85%</span>
+                    </div>
+                    <input id="stampOpacityRange" type="range" min="0.1" max="1.0" step="0.05" value="0.85" style="width: 100%;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Storage Folder Card -->
+              <div class="setting-card">
+                <div class="setting-card-title">
+                  <span>Thư mục lưu kết quả</span>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <button id="selectOutDirBtn" class="btn btn-sm" style="flex: 1; justify-content: flex-start; background: #1e293b; border-color: rgba(56, 189, 248, 0.35); color: #fff;" type="button">
+                    📁 Chọn thư mục lưu...
+                  </button>
+                  <button id="clearOutDirBtn" class="btn btn-sm btn-danger" title="Huỷ chọn thư mục" type="button" style="display: none; padding: 0 8px;">✕</button>
+                </div>
+                <button id="openFolderBtn" class="btn btn-sm" style="width: 100%; justify-content: center; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); color: #38bdf8;" type="button">
+                  Mở thư mục Downloads
+                </button>
+                <span id="selectedOutDirLabel" style="font-size: 0.76rem; color: #34d399; font-family: 'JetBrains Mono', monospace; word-break: break-all; display: none;"></span>
+              </div>
+
+              <!-- Checkbox Options -->
+              <label class="check-card">
+                <input id="autoDownloadCheck" type="checkbox">
+                <span>Tự động lưu file khi hoàn thành</span>
+              </label>
+
+              <label class="check-card">
+                <input id="batchAdaptiveAlphaCheck" type="checkbox">
+                <span>Tự thích ứng độ mờ (Adaptive Alpha)</span>
+              </label>
+
+              <label class="check-card">
+                <input id="batchAllowLowConfidenceCheck" type="checkbox" checked>
+                <span>Quét cả logo mờ / logo phụ</span>
+              </label>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- VIEW 2: SINGLE INSPECTOR / COMPARISON -->
+    <div id="singleView" class="view-container">
+      <div class="single-layout">
+        <!-- Left: Compare Video/Image Player -->
+        <section class="workspace" aria-label="So sánh video và ảnh">
+          <div class="panel">
+            <div class="panel-head">
+              <span>So sánh Trước / Sau</span>
+              <span id="progressText" style="font-family: 'JetBrains Mono', monospace; font-size: 0.84rem; color: var(--primary); font-weight: 700;">Chưa chọn file</span>
+            </div>
+
+            <!-- Single Inspector File Switcher Strip -->
+            <div class="single-file-bar">
+              <div class="single-file-bar-left">
+                <span class="file-bar-label">Tệp đang xem (<span id="singleFileCount">0</span>):</span>
+                <select id="singleFileSelect" class="single-file-select" aria-label="Chọn file để xem"></select>
+              </div>
+              <div class="single-file-bar-nav">
+                <button id="prevFileBtn" class="btn btn-sm btn-icon" title="Tệp trước đó" type="button" disabled>◀</button>
+                <button id="nextFileBtn" class="btn btn-sm btn-icon" title="Tệp kế tiếp" type="button" disabled>▶</button>
+              </div>
+            </div>
+            <!-- Horizontal File Pills Ribbon -->
+            <div id="singleFilePills" class="single-file-pills">
+              <span style="font-size: 0.78rem; color: var(--text-dim); padding: 4px 0;">Chưa có tệp trong hàng đợi. Kéo thả tệp vào đây hoặc thêm ở tab Hàng loạt để so sánh.</span>
+            </div>
+
+            <div id="comparePlayer" class="compare-player">
+              <div class="compare-pane" id="originalPane" style="position: relative;">
+                <video id="originalVideo" playsinline preload="metadata"></video>
+                <img id="originalImg" style="display: none; width: 100%; height: 100%; object-fit: contain;" alt="Ảnh gốc">
+                <canvas id="selectionCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10; cursor: crosshair; display: none;"></canvas>
+                <span class="badge before">Trước (Gốc)</span>
+                <div id="originalEmpty" class="empty">Chọn 1 video hoặc ảnh để xem trước</div>
+              </div>
+              <div class="compare-pane">
+                <video id="processedVideo" playsinline preload="metadata" muted></video>
+                <img id="processedImg" style="display: none; width: 100%; height: 100%; object-fit: contain;" alt="Đã xoá watermark">
+                <span id="afterBadge" class="badge after" hidden>Sau (Đã khử)</span>
+                <div id="processedEmpty" class="empty">Kết quả sau khi xoá watermark sẽ hiển thị ở đây</div>
+              </div>
+            </div>
+            <div class="compare-controls">
+              <button id="playPauseBtn" class="play-toggle" type="button" data-playing="false" aria-label="Phát" disabled></button>
+              <input id="scrubber" type="range" min="0" max="1000" value="0" aria-label="Tiến độ phát" disabled>
+              <span id="timeLabel" class="time-label">0:00</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Single Inspector Controls & HUD Info -->
+        <aside class="single-sidebar">
+          <div class="panel" style="margin-bottom: 16px;">
+            <div class="panel-head">Bảng điều khiển</div>
+            <div class="controls-panel">
+              <div id="autoPresetSummary" hidden style="display:none;"></div>
+              <div class="queue-item-progress" style="height: 6px;"><span id="progressBar" style="display:block; height:100%; width:0%; background:linear-gradient(90deg, #00f2fe, #4facfe); border-radius: 999px;"></span></div>
+              <div id="status" class="status-box" data-tone="info">Sẵn sàng</div>
+              <div class="control-group" style="margin-top: 4px; margin-bottom: 4px;">
+                <label class="check-label" style="font-size: 0.82rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <input id="allowLowConfidence" type="checkbox" checked style="accent-color: #00f2fe;">
+                  <span>Quét cả logo mờ / logo phụ</span>
+                </label>
+              </div>
+
+              <!-- Smart Box / Custom Region Tool -->
+              <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 4px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">Vùng chọn watermark</span>
+                  <button id="toggleBoxBtn" class="btn btn-sm" style="height: 26px; padding: 0 10px; font-size: 0.74rem;" type="button">
+                    ✏️ Vẽ vùng chọn
+                  </button>
+                </div>
+                <div id="boxStatusText" style="font-size: 0.76rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">
+                  Tự động nhận diện (Gemini / Veo)
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button id="detectBtn" type="button">Quét vị trí</button>
+                <button id="resetBtn" type="button">Đặt lại</button>
+                <button id="processBtn" class="btn btn-primary" style="grid-column: span 2; height: 42px; font-size: 0.92rem;" type="button">Bắt đầu xử lý</button>
+                <a id="downloadBtn" class="download-link" style="grid-column: span 2; height: 40px;" aria-disabled="true">Tải kết quả</a>
+              </div>
+
+              <!-- Legacy hidden compatibility controls for SDK / tests -->
+              <div class="internal-controls" style="display:none;" hidden>
+                <span id="alphaGainValue">1.00</span>
+                <input id="alphaGain" type="range" min="0.25" max="1.35" step="0.05" value="1.0">
+                <input id="adaptiveAlpha" type="checkbox">
+                <input id="highQualityCleanup" type="checkbox">
+                <select id="denoiseBackend">
+                  <option value="none">Tắt</option>
+                  <option value="allenk-fdncnn-browser-spike" selected>AI FDnCNN ONNX</option>
+                </select>
+                <button id="relocatedReviewPresetBtn" type="button"></button>
+                <span id="edgeDenoiseStrengthValue">0.25</span>
+                <input id="edgeDenoiseStrength" type="range" min="0" max="1" step="0.05" value="0.25">
+                <span id="residualCleanupValue">1.50</span>
+                <input id="residualCleanup" type="range" min="0" max="1.80" step="0.05" value="1.50">
+                <input id="sampleCount" type="number" min="4" max="24" step="1" value="12">
+                <input id="videoBitrateMbps" type="number" min="1" max="80" step="0.5" value="12">
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 16px;">
+            <div class="panel-head">Thông tin tệp</div>
+            <div id="metadata"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">Vị trí watermark nhận diện</div>
+            <div id="detection"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="video-app.js"></script>
+</body>
+</html>
