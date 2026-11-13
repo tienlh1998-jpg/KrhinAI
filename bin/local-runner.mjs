@@ -5,6 +5,11 @@ import { extname, join, relative, resolve, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
+import {
+  detectUpscaleTools, installUpscaleTools, getInstallState,
+  createUploadJob, markUploadComplete, startUpscaleJob,
+  getJobStatus, getJobOutput, cancelUpscaleJob, cleanupUpscaleJobs
+} from './video-upscaler.mjs';
 const rootDir = realpathSync(fileURLToPath(new URL('../dist', import.meta.url)));
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -66,12 +71,29 @@ function recordHeartbeat() {
     }
   }
 }
+function readJsonBody(req) {
+  return new Promise((ok, fail) => {
+    const chunks = [];
+    let size = 0;
+    req.on('data', chunk => {
+      size += chunk.length;
+      if (size > 1024 * 1024) { req.destroy(); fail(new Error('Body too large')); return; }
+      chunks.push(chunk);
+    });
+    req.on('end', () => {
+      try { ok(JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}')); }
+      catch { fail(new Error('Invalid JSON')); }
+    });
+    req.on('error', fail);
+  });
+}
+
 export function createAppServer({ open = openTarget } = {}) {
-  return createServer((req, res) => {
+  return createServer(async (req, res) => {
     const port = req.socket.localPort;
     const origin = `http://127.0.0.1:${port}`;
     function send(code, body, type = 'text/plain; charset=utf-8') {
-      res.writeHead(code, { 'Content-Type': type, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
+      res.writeHead(code, { 'Content-Type': type, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Cross-Origin-Resource-Policy': 'same-origin' });
       res.end(body);
     }
     if (![ `127.0.0.1:${port}`, `localhost:${port}` ].includes(req.headers.host)) return send(403, 'Forbidden host');
@@ -81,6 +103,46 @@ export function createAppServer({ open = openTarget } = {}) {
       if (url.pathname === '/api/health' && req.method === 'GET') {
         return send(200, JSON.stringify({ app: 'Krhin AI', version: '1.1.0', platform: process.platform, node: process.version }), 'application/json');
       }
+      if (url.pathname === '/api/upscale/tools' && req.method === 'GET') {
+        return send(200, JSON.stringify(await detectUpscaleTools()), 'application/json');
+      }
+      if (url.pathname === '/api/upscale/install-status' && req.method === 'GET') {
+        return send(200, JSON.stringify(getInstallState()), 'application/json');
+      }
+      if (url.pathname === '/api/upscale/status' && req.method === 'GET') {
+        const job = getJobStatus(url.searchParams.get('jobId'));
+        return job ? send(200, JSON.stringify(job), 'application/json') : send(404, '{"error":"Job not found"}', 'application/json');
+      }
+      if (url.pathname === '/api/upscale/result' && (req.method === 'GET' || req.method === 'HEAD')) {
+        const out = getJobOutput(url.searchParams.get('jobId'));
+        if (!out) return send(404, 'Not found');
+        const stat = statSync(out.path);
+        const headers = {
+          'Content-Type': 'video/mp4',
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'no-store',
+          'Cross-Origin-Resource-Policy': 'same-origin'
+        };
+        if (url.searchParams.get('download') === '1') {
+          headers['Content-Disposition'] = `attachment; filename="${out.filename}"`;
+        }
+        const range = req.headers.range;
+        if (range) {
+          const match = /bytes=(\d+)-(\d*)/.exec(range);
+          if (match) {
+            const start = Number(match[1]);
+            const end = match[2] ? Math.min(stat.size - 1, Number(match[2])) : stat.size - 1;
+            if (start <= end && start < stat.size) {
+              res.writeHead(206, { ...headers, 'Content-Range': `bytes ${start}-${end}/${stat.size}`, 'Content-Length': end - start + 1 });
+              if (req.method === 'HEAD') return res.end();
+              return createReadStream(out.path, { start, end }).pipe(res);
+            }
+          }
+        }
+        res.writeHead(200, { ...headers, 'Content-Length': stat.size });
+        if (req.method === 'HEAD') return res.end();
+        return createReadStream(out.path).pipe(res);
+      }
       if (req.method !== 'POST') return send(405, 'Use POST');
       if (req.headers.origin !== `http://${req.headers.host}` || req.headers['x-krhin-request'] !== '1') return send(403, 'Forbidden origin');
       if (url.pathname === '/api/heartbeat') {
@@ -88,6 +150,7 @@ export function createAppServer({ open = openTarget } = {}) {
         return send(200, '{"ok":true}', 'application/json');
       }
       if (url.pathname === '/api/shutdown') {
+        cleanupUpscaleJobs();
         send(200, '{"ok":true}', 'application/json');
         setTimeout(() => process.exit(0), 400);
         return;
@@ -98,6 +161,44 @@ export function createAppServer({ open = openTarget } = {}) {
           .then(() => send(200, '{"ok":true}', 'application/json'))
           .catch(() => send(500, '{"ok":false,"error":"Không mở được thư mục"}', 'application/json'));
         return;
+      }
+      if (url.pathname === '/api/upscale/install') {
+        try {
+          const state = await installUpscaleTools();
+          return send(200, JSON.stringify(state), 'application/json');
+        } catch (err) {
+          return send(500, JSON.stringify({ error: err.message }), 'application/json');
+        }
+      }
+      if (url.pathname === '/api/upscale/upload') {
+        const rawName = decodeURIComponent(req.headers['x-filename'] || 'video.mp4');
+        const { job, writeStream } = createUploadJob(rawName);
+        req.pipe(writeStream);
+        writeStream.on('finish', () => {
+          markUploadComplete(job.id);
+          send(200, JSON.stringify({ ok: true, jobId: job.id }), 'application/json');
+        });
+        writeStream.on('error', err => {
+          send(500, JSON.stringify({ ok: false, error: err.message }), 'application/json');
+        });
+        return;
+      }
+      if (url.pathname === '/api/upscale/start') {
+        try {
+          const body = await readJsonBody(req);
+          const status = await startUpscaleJob(body.jobId, body);
+          return send(200, JSON.stringify(status), 'application/json');
+        } catch (err) {
+          return send(400, JSON.stringify({ error: err.message }), 'application/json');
+        }
+      }
+      if (url.pathname === '/api/upscale/cancel') {
+        try {
+          const body = await readJsonBody(req);
+          return send(200, JSON.stringify({ ok: cancelUpscaleJob(body.jobId) }), 'application/json');
+        } catch (err) {
+          return send(400, JSON.stringify({ error: err.message }), 'application/json');
+        }
       }
       return send(404, 'Not found');
     }

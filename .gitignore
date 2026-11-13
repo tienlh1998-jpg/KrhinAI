@@ -19,3 +19,8 @@ build/*.json
 # Temporary backups
 *.bak
 backups/
+
+# Large optional FFmpeg binaries (auto-downloaded on demand)
+runtime/upscaler/ffmpeg.exe
+runtime/upscaler/ffprobe.exe
+runtime/upscaler/*.zip

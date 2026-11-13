@@ -1422,6 +1422,9 @@
         <button id="tabSingleBtn" class="tab-btn" type="button">
           🔍 So sánh &amp; Tinh chỉnh
         </button>
+        <button id="tabUpscaleBtn" class="tab-btn" type="button">
+          🚀 AI Upscale Video (1080p/4K)
+        </button>
       </div>
       <div class="mode-hint-pill">
         <span>💡 Mẹo: Nhấn <kbd>Ctrl + V</kbd> bất kỳ lúc nào để dán ảnh trực tiếp từ Clipboard</span>
@@ -1810,6 +1813,9 @@
                 <a id="downloadBtn" class="download-link" style="grid-column: span 2; height: 42px;" aria-disabled="true">
                   ⬇ Tải file kết quả
                 </a>
+                <button id="sendToUpscaleBtn" class="btn btn-secondary" style="grid-column: span 2; height: 38px; font-size: 0.84rem;" type="button">
+                  🚀 Nâng cấp video này lên 1080p / 4K (Real-ESRGAN)
+                </button>
               </div>
 
               <!-- Legacy hidden compatibility controls for SDK / tests -->
@@ -1843,6 +1849,101 @@
             <div id="detection"></div>
           </div>
         </aside>
+      </div>
+    </div>
+
+    <!-- VIEW 3: AI VIDEO UPSCALER (REAL-ESRGAN + FFMPEG) -->
+    <div id="upscaleView" class="view-container">
+      <div class="panel" style="margin-bottom: 16px;">
+        <div class="panel-head" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <span>🚀 Nâng cấp độ phân giải Video bằng AI (Real-ESRGAN GPU Vulkan + FFmpeg)</span>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span id="upscaleEngineBadge" class="badge-pill" style="font-size:0.78rem;">Đang kiểm tra engine...</span>
+            <button id="upscaleInstallBtn" class="btn btn-sm btn-primary" type="button" hidden>
+              ⬇ Tải &amp; Cài đặt Engine tự động
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout" style="grid-template-columns: 380px 1fr;">
+        <aside class="panel" style="padding: 16px; display:flex; flex-direction:column; gap:14px;">
+          <div id="upscaleDropzone" class="dropzone" style="padding: 20px 14px; text-align:center; cursor:pointer; border:1px dashed rgba(0,242,254,0.35); border-radius:12px; background:rgba(15,23,42,0.55);">
+            <input id="upscaleFileInput" type="file" accept="video/*" hidden>
+            <div style="font-size:1.5rem; margin-bottom:6px;">🎬</div>
+            <div id="upscaleFileName" style="font-weight:700; font-size:0.9rem; color:#fff;">Kéo thả hoặc chọn Video (720p...)</div>
+            <div id="upscaleFileMeta" style="font-size:0.76rem; color:var(--text-muted); margin-top:4px;">Hỗ trợ MP4, MOV, WebM, MKV</div>
+          </div>
+
+          <button id="upscaleUseStudioBtn" class="btn btn-secondary" type="button" style="width:100%; font-size:0.82rem;">
+            📥 Lấy video đang mở từ tab Studio
+          </button>
+
+          <div class="control-group">
+            <label for="upscaleTargetSelect" style="font-size:0.82rem; font-weight:700; color:#e2e8f0; display:block; margin-bottom:6px;">Độ phân giải đầu ra</label>
+            <select id="upscaleTargetSelect" style="width:100%;">
+              <option value="1080p" selected>Full HD 1080p (Tối ưu từ 720p)</option>
+              <option value="1440p">2K QHD 1440p (Gấp đôi 720p)</option>
+              <option value="2160p">4K UHD 2160p (Siêu nét)</option>
+              <option value="2x">Scale 2x kích thước gốc</option>
+              <option value="4x">Scale 4x kích thước gốc</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="upscaleModelSelect" style="font-size:0.82rem; font-weight:700; color:#e2e8f0; display:block; margin-bottom:6px;">Model AI Real-ESRGAN</label>
+            <select id="upscaleModelSelect" style="width:100%;">
+              <option value="realesr-animevideov3" selected>Real-ESRGAN AnimeVideo v3 (Nhanh, mượt cho Clip AI)</option>
+              <option value="realesrgan-x4plus">Real-ESRGAN x4+ (Siêu nét cho cảnh thật / 3D)</option>
+              <option value="realesrgan-x4plus-anime">Real-ESRGAN x4+ Anime (Hoạt hình / 2D)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="upscaleCrfSelect" style="font-size:0.82rem; font-weight:700; color:#e2e8f0; display:block; margin-bottom:6px;">Chất lượng nén MP4 (H.264)</label>
+            <select id="upscaleCrfSelect" style="width:100%;">
+              <option value="16" selected>Cao (CRF 16 - Nét căng, file vừa)</option>
+              <option value="12">Cực cao (CRF 12 - Gần như không nén)</option>
+              <option value="20">Tiêu chuẩn (CRF 20 - Nhẹ dung lượng)</option>
+            </select>
+          </div>
+
+          <div class="queue-item-progress" style="height: 8px;">
+            <span id="upscaleProgressBar" style="display:block; height:100%; width:0%; background:linear-gradient(90deg, #00f2fe, #38bdf8); border-radius:999px; transition:width 0.25s;"></span>
+          </div>
+          <div id="upscaleStatusText" class="status-box" data-tone="info" style="font-size:0.8rem;">
+            Chọn video để bắt đầu nâng cấp độ phân giải.
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr; gap:8px;">
+            <button id="upscaleStartBtn" class="btn btn-primary" type="button" style="height:44px; font-weight:800;">
+              🚀 Bắt đầu Nâng cấp Video
+            </button>
+            <button id="upscaleCancelBtn" class="btn btn-secondary" type="button" hidden>
+              ⏹ Hủy xử lý
+            </button>
+            <a id="upscaleDownloadBtn" class="download-link" style="height:42px;" aria-disabled="true">
+              ⬇ Tải Video đã Nâng cấp
+            </a>
+          </div>
+        </aside>
+
+        <section class="panel" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+            <span style="font-weight:800; color:#fff;">So sánh Video Gốc vs Sau khi AI Upscale</span>
+            <button id="upscalePlayPauseBtn" class="btn btn-sm btn-secondary" type="button">▶ Phát / Tạm dừng đồng bộ</button>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; min-height:380px;">
+            <div style="background:#050811; border:1px solid var(--panel-border); border-radius:10px; padding:8px; display:flex; flex-direction:column;">
+              <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:6px;">TRƯỚC (Bản gốc)</div>
+              <video id="upscaleOriginalVideo" controls playsinline style="width:100%; flex:1; max-height:480px; border-radius:8px; background:#000;"></video>
+            </div>
+            <div style="background:#050811; border:1px solid rgba(0,242,254,0.3); border-radius:10px; padding:8px; display:flex; flex-direction:column;">
+              <div style="font-size:0.75rem; font-weight:700; color:#00f2fe; margin-bottom:6px;">SAU (AI Real-ESRGAN Upscaled)</div>
+              <video id="upscaleResultVideo" controls playsinline style="width:100%; flex:1; max-height:480px; border-radius:8px; background:#000;"></video>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>

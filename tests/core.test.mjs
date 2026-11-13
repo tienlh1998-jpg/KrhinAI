@@ -80,3 +80,20 @@ test('batch queue forwards export options and handles custom branding & format o
   assert.equal(receivedOptions.stampConfig.text, '@KrhinAI');
   assert.equal(q.getStats().completed, 1);
 });
+
+test('upscale tools endpoint reports status and rejects invalid job', async () => {
+  const server = await startServer({ port: 0, autoOpen: false });
+  try {
+    const port = server.address().port;
+    const toolsRes = await fetch(`http://127.0.0.1:${port}/api/upscale/tools`);
+    assert.equal(toolsRes.status, 200);
+    const tools = await toolsRes.json();
+    assert.equal(typeof tools.ready, 'boolean');
+    assert.ok(Array.isArray(tools.models));
+
+    const missingRes = await fetch(`http://127.0.0.1:${port}/api/upscale/status?jobId=missing`);
+    assert.equal(missingRes.status, 404);
+  } finally {
+    server.close();
+  }
+});

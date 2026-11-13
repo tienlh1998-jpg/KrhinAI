@@ -821,17 +821,14 @@ if (singleDropTarget) {
 }
 
 function _m(t) {
-    if (t === "batch") {
-        U.tabBatchBtn.classList.add("active");
-        U.tabSingleBtn.classList.remove("active");
-        U.batchView.classList.add("active");
-        U.singleView.classList.remove("active");
-    } else {
-        U.tabSingleBtn.classList.add("active");
-        U.tabBatchBtn.classList.remove("active");
-        U.singleView.classList.add("active");
-        U.batchView.classList.remove("active");
-    }
+    const tabUpscaleBtn = we("tabUpscaleBtn");
+    const upscaleView = we("upscaleView");
+    U.tabBatchBtn?.classList.toggle("active", t === "batch");
+    U.tabSingleBtn?.classList.toggle("active", t === "single");
+    tabUpscaleBtn?.classList.toggle("active", t === "upscale");
+    U.batchView?.classList.toggle("active", t === "batch");
+    U.singleView?.classList.toggle("active", t === "single");
+    upscaleView?.classList.toggle("active", t === "upscale");
 }
 U.concurrencySelect?.addEventListener("change", e => {
     let val = Number(e.target.value) || 2;
@@ -1559,5 +1556,254 @@ function setupAppLifecycle() {
     window.addEventListener('pagehide', onExit);
     window.addEventListener('beforeunload', onExit);
 }
+function setupVideoUpscaler() {
+    const tabBtn = we("tabUpscaleBtn");
+    const badge = we("upscaleEngineBadge");
+    const installBtn = we("upscaleInstallBtn");
+    const dropzone = we("upscaleDropzone");
+    const fileInput = we("upscaleFileInput");
+    const fileNameEl = we("upscaleFileName");
+    const fileMetaEl = we("upscaleFileMeta");
+    const useStudioBtn = we("upscaleUseStudioBtn");
+    const sendToUpscaleBtn = we("sendToUpscaleBtn");
+    const targetSelect = we("upscaleTargetSelect");
+    const modelSelect = we("upscaleModelSelect");
+    const crfSelect = we("upscaleCrfSelect");
+    const progressBar = we("upscaleProgressBar");
+    const statusText = we("upscaleStatusText");
+    const startBtn = we("upscaleStartBtn");
+    const cancelBtn = we("upscaleCancelBtn");
+    const downloadBtn = we("upscaleDownloadBtn");
+    const origVideo = we("upscaleOriginalVideo");
+    const resVideo = we("upscaleResultVideo");
+    const playPauseBtn = we("upscalePlayPauseBtn");
+    if (!tabBtn || !startBtn) return;
+
+    let selectedFile = null;
+    let origUrl = null;
+    let activeJobId = null;
+    let pollTimer = null;
+
+    function setUpscaleStatus(msg, tone = "info", pct = null) {
+        if (statusText) {
+            statusText.textContent = msg;
+            statusText.dataset.tone = tone;
+        }
+        if (progressBar && pct !== null) {
+            progressBar.style.width = `${Math.max(0, Math.min(100, Math.round(pct * 100)))}%`;
+        }
+    }
+
+    async function refreshTools() {
+        try {
+            const res = await fetch('/api/upscale/tools');
+            if (!res.ok) throw new Error('Không kết nối được local server');
+            const data = await res.json();
+            if (data.ready) {
+                if (badge) {
+                    badge.textContent = '✅ Real-ESRGAN GPU + FFmpeg Sẵn sàng';
+                    badge.style.color = '#10b981';
+                }
+                if (installBtn) installBtn.hidden = true;
+            } else {
+                const missing = [];
+                if (!data.realesrganPath) missing.push('Real-ESRGAN');
+                if (!data.ffmpegPath) missing.push('FFmpeg');
+                if (badge) {
+                    badge.textContent = `⚠ Thiếu: ${missing.join(' + ')}`;
+                    badge.style.color = '#f59e0b';
+                }
+                if (installBtn) installBtn.hidden = false;
+            }
+            return data;
+        } catch {
+            if (badge) badge.textContent = '⚠ Cần chạy qua Krhin-AI.exe';
+            return null;
+        }
+    }
+
+    installBtn?.addEventListener("click", async () => {
+        installBtn.disabled = true;
+        setUpscaleStatus('Đang bắt đầu tải và cài đặt công cụ...', 'info', 0.05);
+        try {
+            await fetch('/api/upscale/install', {
+                method: 'POST',
+                headers: { 'x-krhin-request': '1' }
+            });
+            const timer = setInterval(async () => {
+                try {
+                    const st = await (await fetch('/api/upscale/install-status')).json();
+                    setUpscaleStatus(st.message || 'Đang cài đặt...', st.error ? 'error' : 'info', st.progress || 0.2);
+                    if (!st.running) {
+                        clearInterval(timer);
+                        installBtn.disabled = false;
+                        await refreshTools();
+                        if (!st.error) showToast?.('Cài đặt Real-ESRGAN & FFmpeg thành công!', 'success');
+                    }
+                } catch {
+                    clearInterval(timer);
+                    installBtn.disabled = false;
+                }
+            }, 900);
+        } catch (err) {
+            installBtn.disabled = false;
+            setUpscaleStatus('Lỗi cài đặt: ' + err.message, 'error', 0);
+        }
+    });
+
+    function loadVideoFile(fileOrBlob, displayName) {
+        if (!fileOrBlob) return;
+        selectedFile = fileOrBlob instanceof File ? fileOrBlob : new File([fileOrBlob], displayName || 'studio_cleaned.mp4', { type: fileOrBlob.type || 'video/mp4' });
+        if (origUrl) URL.revokeObjectURL(origUrl);
+        origUrl = URL.createObjectURL(selectedFile);
+        if (origVideo) { origVideo.src = origUrl; origVideo.load(); }
+        if (resVideo) { resVideo.removeAttribute('src'); resVideo.load(); }
+        if (fileNameEl) fileNameEl.textContent = selectedFile.name;
+        if (fileMetaEl) fileMetaEl.textContent = `Dung lượng: ${LG(selectedFile.size)}`;
+        if (downloadBtn) {
+            downloadBtn.setAttribute('aria-disabled', 'true');
+            downloadBtn.removeAttribute('href');
+        }
+        setUpscaleStatus('Sẵn sàng nâng cấp video. Chọn độ phân giải và nhấn Bắt đầu.', 'info', 0);
+    }
+
+    async function loadFromStudio() {
+        if (_e.processedUrl && _e.file && _e.file.type.startsWith('video/')) {
+            try {
+                const blob = await (await fetch(_e.processedUrl)).blob();
+                loadVideoFile(blob, `cleaned_${_e.file.name}`);
+                showToast?.('Đã nạp video kết quả từ Studio!', 'success');
+                return;
+            } catch {}
+        }
+        if (_e.file && _e.file.type.startsWith('video/')) {
+            loadVideoFile(_e.file, _e.file.name);
+            showToast?.('Đã nạp video gốc từ Studio!', 'info');
+            return;
+        }
+        showToast?.('Chưa có video nào trong Studio. Hãy chọn hoặc kéo thả file video.', 'warning');
+    }
+
+    tabBtn.addEventListener("click", () => {
+        _m("upscale");
+        refreshTools();
+    });
+    useStudioBtn?.addEventListener("click", loadFromStudio);
+    sendToUpscaleBtn?.addEventListener("click", async () => {
+        _m("upscale");
+        await refreshTools();
+        await loadFromStudio();
+    });
+
+    dropzone?.addEventListener("click", () => fileInput?.click());
+    dropzone?.addEventListener("dragover", e => { e.preventDefault(); dropzone.style.borderColor = '#00f2fe'; });
+    dropzone?.addEventListener("dragleave", () => { dropzone.style.borderColor = 'rgba(0,242,254,0.35)'; });
+    dropzone?.addEventListener("drop", e => {
+        e.preventDefault();
+        dropzone.style.borderColor = 'rgba(0,242,254,0.35)';
+        const f = e.dataTransfer?.files?.[0];
+        if (f && f.type.startsWith('video/')) loadVideoFile(f, f.name);
+    });
+    fileInput?.addEventListener("change", e => {
+        const f = e.target.files?.[0];
+        if (f) loadVideoFile(f, f.name);
+    });
+
+    playPauseBtn?.addEventListener("click", () => {
+        if (!origVideo?.src) return;
+        if (origVideo.paused) {
+            if (resVideo?.src) resVideo.currentTime = origVideo.currentTime;
+            origVideo.play().catch(() => {});
+            if (resVideo?.src) resVideo.play().catch(() => {});
+        } else {
+            origVideo.pause();
+            resVideo?.pause();
+        }
+    });
+
+    cancelBtn?.addEventListener("click", async () => {
+        if (!activeJobId) return;
+        await fetch('/api/upscale/cancel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-krhin-request': '1' },
+            body: JSON.stringify({ jobId: activeJobId })
+        }).catch(() => {});
+    });
+
+    startBtn.addEventListener("click", async () => {
+        if (!selectedFile) {
+            showToast?.('Vui lòng chọn video cần nâng cấp trước!', 'warning');
+            return;
+        }
+        const tools = await refreshTools();
+        if (!tools?.ready) {
+            showToast?.('Vui lòng bấm "Tải & Cài đặt Engine tự động" ở góc trên trước!', 'warning');
+            return;
+        }
+
+        startBtn.disabled = true;
+        if (cancelBtn) cancelBtn.hidden = false;
+        setUpscaleStatus('Đang gửi video tới bộ xử lý GPU local...', 'info', 0.03);
+
+        try {
+            const upRes = await fetch('/api/upscale/upload', {
+                method: 'POST',
+                headers: {
+                    'x-krhin-request': '1',
+                    'x-filename': encodeURIComponent(selectedFile.name)
+                },
+                body: selectedFile
+            });
+            const upData = await upRes.json();
+            if (!upRes.ok || !upData.jobId) throw new Error(upData.error || 'Upload thất bại');
+            activeJobId = upData.jobId;
+
+            const startRes = await fetch('/api/upscale/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-krhin-request': '1' },
+                body: JSON.stringify({
+                    jobId: activeJobId,
+                    model: modelSelect?.value || 'realesr-animevideov3',
+                    targetPreset: targetSelect?.value || '1080p',
+                    crf: Number(crfSelect?.value) || 16
+                })
+            });
+            const startData = await startRes.json();
+            if (!startRes.ok) throw new Error(startData.error || 'Không thể khởi chạy upscale');
+
+            if (pollTimer) clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try {
+                    const st = await (await fetch(`/api/upscale/status?jobId=${encodeURIComponent(activeJobId)}`)).json();
+                    setUpscaleStatus(st.message || 'Đang xử lý...', st.status === 'error' ? 'error' : (st.status === 'done' ? 'success' : 'info'), st.progress || 0);
+                    if (st.status === 'done') {
+                        clearInterval(pollTimer);
+                        startBtn.disabled = false;
+                        if (cancelBtn) cancelBtn.hidden = true;
+                        const resultUrl = `/api/upscale/result?jobId=${encodeURIComponent(activeJobId)}`;
+                        if (resVideo) { resVideo.src = resultUrl; resVideo.load(); }
+                        if (downloadBtn) {
+                            downloadBtn.href = `${resultUrl}&download=1`;
+                            downloadBtn.download = `upscaled_${selectedFile.name.replace(/\.[^.]+$/, '')}.mp4`;
+                            downloadBtn.setAttribute('aria-disabled', 'false');
+                        }
+                        showToast?.('Nâng cấp độ phân giải video thành công!', 'success');
+                    } else if (st.status === 'error' || st.status === 'cancelled') {
+                        clearInterval(pollTimer);
+                        startBtn.disabled = false;
+                        if (cancelBtn) cancelBtn.hidden = true;
+                    }
+                } catch {}
+            }, 600);
+        } catch (err) {
+            startBtn.disabled = false;
+            if (cancelBtn) cancelBtn.hidden = true;
+            setUpscaleStatus('Lỗi: ' + err.message, 'error', 0);
+        }
+    });
+
+    refreshTools();
+}
+setupVideoUpscaler();
 setupAppLifecycle();
 JB("video").then(t=>{t?.file&&Tm([t.file])}).catch(t=>console.warn("video handoff error:",t));
