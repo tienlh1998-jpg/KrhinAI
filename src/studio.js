@@ -1548,6 +1548,9 @@ function setupAppLifecycle() {
     }
     ping();
     setInterval(ping, 2500);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') ping();
+    });
     const onExit = () => {
         try {
             fetch('/api/shutdown', {

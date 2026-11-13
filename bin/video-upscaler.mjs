@@ -266,11 +266,15 @@ export async function startUpscaleJob(jobId, options = {}) {
 
       // Determine Real-ESRGAN native scale & final target height
       let targetHeight = meta.height * 2;
-      if (targetPreset === '1080p') targetHeight = Math.max(1080, meta.height);
-      else if (targetPreset === '1440p') targetHeight = Math.max(1440, meta.height);
-      else if (targetPreset === '2160p') targetHeight = Math.max(2160, meta.height);
+      if (targetPreset === '1080p') targetHeight = 1080;
+      else if (targetPreset === '1440p') targetHeight = 1440;
+      else if (targetPreset === '2160p') targetHeight = 2160;
       else if (targetPreset === '4x') targetHeight = meta.height * 4;
       else targetHeight = meta.height * 2;
+
+      if (['1080p', '1440p', '2160p'].includes(targetPreset) && meta.height >= targetHeight) {
+        throw new Error(`Video gốc đã là ${meta.width}x${meta.height} (đạt sẵn ${targetPreset}). Hãy chọn mức cao hơn (2K / 4K / 2x) để nâng cấp.`);
+      }
 
       const neededRatio = targetHeight / Math.max(1, meta.height);
       let engineScale = neededRatio > 2.2 ? 4 : 2;
@@ -458,7 +462,9 @@ export function cancelUpscaleJob(jobId) {
 export function hasActiveUpscaleJob() {
   if (installState.running) return true;
   for (const job of jobs.values()) {
-    if (job.status === 'processing') return true;
+    if (job.status === 'processing' || job.status === 'uploading') return true;
+    // Keep server alive for at least 15 minutes after a job finishes so user can preview/download even if tab was throttled
+    if (job.status === 'done' && job.startedAt && (Date.now() - job.startedAt) < 15 * 60 * 1000) return true;
   }
   return false;
 }

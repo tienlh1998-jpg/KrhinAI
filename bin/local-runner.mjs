@@ -66,11 +66,11 @@ function recordHeartbeat() {
           lastHeartbeat = Date.now();
           return;
         }
-        if (hasClientConnected && Date.now() - lastHeartbeat > 30000) {
+        if (hasClientConnected && Date.now() - lastHeartbeat > 300000) {
           clearInterval(watchdogInterval);
           process.exit(0);
         }
-      }, 3000);
+      }, 5000);
       watchdogInterval.unref?.();
     }
   }
