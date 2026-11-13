@@ -87,13 +87,38 @@ export async function detectUpscaleTools() {
   };
 }
 
+function appendJobLog(job, line) {
+  if (!job || !line) return;
+  const clean = String(line).replace(/\s+$/g, '');
+  if (!clean) return;
+  if (!Array.isArray(job.logs)) job.logs = [];
+  const ts = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+  const entry = `[${ts}] ${clean}`;
+  // Avoid spamming identical progress lines; replace last if both are frame= or %
+  const last = job.logs[job.logs.length - 1] || '';
+  if ((clean.startsWith('frame=') && last.includes('frame=')) || (/^\d+\.\d+%$/.test(clean) && /\d+\.\d+%$/.test(last))) {
+    job.logs[job.logs.length - 1] = entry;
+  } else {
+    job.logs.push(entry);
+    if (job.logs.length > 200) job.logs.shift();
+  }
+}
+
 function runProcess(cmd, args, opts = {}) {
   return new Promise((resolveProc, rejectProc) => {
     const child = spawn(cmd, args, { windowsHide: true, ...opts });
     let stderr = '';
     let stdout = '';
-    child.stdout?.on('data', d => { stdout += d.toString(); });
-    child.stderr?.on('data', d => { stderr += d.toString(); if (stderr.length > 16000) stderr = stderr.slice(-16000); });
+    const emitLines = (chunk) => {
+      if (typeof opts.onLog !== 'function') return;
+      const parts = chunk.toString().split(/[\r\n]+/);
+      for (const p of parts) {
+        const trimmed = p.trim();
+        if (trimmed) opts.onLog(trimmed);
+      }
+    };
+    child.stdout?.on('data', d => { stdout += d.toString(); emitLines(d); });
+    child.stderr?.on('data', d => { stderr += d.toString(); if (stderr.length > 16000) stderr = stderr.slice(-16000); emitLines(d); });
     if (opts.onChild) opts.onChild(child);
     child.on('error', rejectProc);
     child.on('close', (code) => {
@@ -222,7 +247,9 @@ export async function startUpscaleJob(jobId, options = {}) {
   job.progress = 0.02;
   job.cancelled = false;
   job.startedAt = Date.now();
+  job.logs = [];
   job.message = 'Đang phân tích thông số video...';
+  appendJobLog(job, `Bắt đầu job ${jobId} | Model: ${model} | Đích: ${targetPreset} | CRF: ${crf}`);
 
   (async () => {
     const framesDir = join(job.jobDir, 'frames_in');
@@ -235,6 +262,7 @@ export async function startUpscaleJob(jobId, options = {}) {
 
       const meta = await probeVideo(tools.ffprobePath, tools.ffmpegPath, job.inputPath);
       job.inputMeta = meta;
+      appendJobLog(job, `Thông số gốc: ${meta.width}x${meta.height} @ ${meta.fps}fps | ~${meta.nbFrames} frames | Thời lượng: ${meta.duration.toFixed(1)}s | Audio: ${meta.hasAudio ? 'Có' : 'Không'}`);
 
       // Determine Real-ESRGAN native scale & final target height
       let targetHeight = meta.height * 2;
@@ -247,25 +275,51 @@ export async function startUpscaleJob(jobId, options = {}) {
       const neededRatio = targetHeight / Math.max(1, meta.height);
       let engineScale = neededRatio > 2.2 ? 4 : 2;
       // realesrgan-x4plus models only support -s 4 natively
-      if (model.includes('x4plus')) engineScale = 4;
+      if (model.includes('x4plus')) {
+        engineScale = 4;
+        if (meta.nbFrames > 1500) {
+          appendJobLog(job, `⚠ Lưu ý: Video dài (${meta.nbFrames} frames) chạy với model x4plus sẽ mất khá lâu. Nếu muốn nhanh hơn 5-10 lần, hãy chọn AnimeVideo v3.`);
+        }
+      }
 
       if (job.cancelled) throw new Error('Đã hủy tác vụ.');
 
       // Phase 2: Extract frames
       job.phase = 'extract';
-      job.progress = 0.08;
+      job.progress = 0.05;
       job.message = `Đang tách khung hình (${meta.width}x${meta.height} @ ${meta.fps}fps)...`;
+      appendJobLog(job, `Bước 1/3: Tách frame bằng FFmpeg vào ${framesDir}`);
 
-      await runProcess(tools.ffmpegPath, [
-        '-y', '-i', job.inputPath, '-qscale:v', '1', '-qmin', '1', '-fps_mode', 'passthrough',
-        join(framesDir, 'frame_%08d.png')
-      ], { onChild: c => { job.child = c; } });
+      const estTotal = Math.max(1, meta.nbFrames || 100);
+      let extractTimer = setInterval(async () => {
+        try {
+          const extCount = (await readdir(framesDir)).filter(f => f.endsWith('.png')).length;
+          const frac = Math.min(0.99, extCount / estTotal);
+          job.progress = 0.05 + frac * 0.10;
+          job.message = `Đang tách khung hình: ${extCount}${meta.nbFrames ? '/' + meta.nbFrames : ''} frame (${Math.round(frac * 100)}%)...`;
+        } catch {}
+      }, 600);
+
+      try {
+        await runProcess(tools.ffmpegPath, [
+          '-y', '-i', job.inputPath, '-qscale:v', '1', '-qmin', '1', '-fps_mode', 'passthrough',
+          join(framesDir, 'frame_%08d.png')
+        ], {
+          onChild: c => { job.child = c; },
+          onLog: line => {
+            if (line.startsWith('frame=') || /error|invalid|failed/i.test(line)) appendJobLog(job, `[ffmpeg] ${line}`);
+          }
+        });
+      } finally {
+        clearInterval(extractTimer);
+      }
 
       if (job.cancelled) throw new Error('Đã hủy tác vụ.');
 
       const inputFiles = (await readdir(framesDir)).filter(f => f.endsWith('.png'));
       const totalFrames = inputFiles.length;
       if (totalFrames === 0) throw new Error('Không tách được khung hình nào từ video.');
+      appendJobLog(job, `Đã tách xong ${totalFrames} frame PNG.`);
 
       // Phase 3: Real-ESRGAN GPU Upscale
       job.phase = 'upscale';
@@ -273,16 +327,27 @@ export async function startUpscaleJob(jobId, options = {}) {
       job.totalFrames = totalFrames;
       job.processedFrames = 0;
       job.message = `AI Real-ESRGAN (${model} x${engineScale}) đang xử lý 0/${totalFrames} frame...`;
+      appendJobLog(job, `Bước 2/3: Chạy Real-ESRGAN GPU (${model} -s ${engineScale}) trên ${totalFrames} frame...`);
 
+      const upscaleStart = Date.now();
       pollTimer = setInterval(async () => {
         try {
           const doneCount = (await readdir(outFramesDir)).filter(f => f.endsWith('.png')).length;
           job.processedFrames = doneCount;
           const frac = Math.min(1, doneCount / totalFrames);
           job.progress = 0.15 + frac * 0.72;
-          job.message = `AI Real-ESRGAN (${model} x${engineScale}) đang xử lý ${doneCount}/${totalFrames} frame (${Math.round(frac * 100)}%)`;
+          let etaStr = '';
+          if (doneCount > 3) {
+            const elapsedSec = (Date.now() - upscaleStart) / 1000;
+            const rate = doneCount / Math.max(0.1, elapsedSec);
+            const remSec = Math.round((totalFrames - doneCount) / rate);
+            const m = Math.floor(remSec / 60);
+            const s = remSec % 60;
+            etaStr = ` · Còn ~${m > 0 ? m + 'p ' : ''}${s}s`;
+          }
+          job.message = `AI Real-ESRGAN (${model} x${engineScale}): ${doneCount}/${totalFrames} frame (${Math.round(frac * 100)}%)${etaStr}`;
         } catch {}
-      }, 500);
+      }, 600);
 
       const modelsDir = join(dirname(tools.realesrganPath), 'models');
       await runProcess(tools.realesrganPath, [
@@ -294,7 +359,8 @@ export async function startUpscaleJob(jobId, options = {}) {
         '-f', 'png'
       ], {
         cwd: dirname(tools.realesrganPath),
-        onChild: c => { job.child = c; }
+        onChild: c => { job.child = c; },
+        onLog: line => appendJobLog(job, `[realesrgan] ${line}`)
       });
 
       clearInterval(pollTimer);
@@ -311,6 +377,7 @@ export async function startUpscaleJob(jobId, options = {}) {
         : 'scale=trunc(iw/2)*2:trunc(ih/2)*2';
 
       job.message = `Đang ghép video ${evenTargetH}p + giữ nguyên âm thanh gốc...`;
+      appendJobLog(job, `Bước 3/3: Đang encode MP4 (${vfFilter}, CRF ${crf})...`);
 
       const encodeArgs = [
         '-y',
@@ -330,7 +397,12 @@ export async function startUpscaleJob(jobId, options = {}) {
         job.outputPath
       );
 
-      await runProcess(tools.ffmpegPath, encodeArgs, { onChild: c => { job.child = c; } });
+      await runProcess(tools.ffmpegPath, encodeArgs, {
+        onChild: c => { job.child = c; },
+        onLog: line => {
+          if (line.startsWith('frame=') || /error|invalid|failed/i.test(line)) appendJobLog(job, `[ffmpeg-encode] ${line}`);
+        }
+      });
 
       const outStat = statSync(job.outputPath);
       const outMeta = await probeVideo(tools.ffprobePath, tools.ffmpegPath, job.outputPath);
@@ -342,12 +414,14 @@ export async function startUpscaleJob(jobId, options = {}) {
       job.outputMeta = outMeta;
       job.elapsedMs = Date.now() - job.startedAt;
       job.message = `Hoàn tất! ${outMeta.width}x${outMeta.height} (${(outStat.size / 1048576).toFixed(1)} MB)`;
+      appendJobLog(job, `✅ ${job.message} · Tổng thời gian: ${(job.elapsedMs / 1000).toFixed(1)}s`);
     } catch (err) {
       if (pollTimer) clearInterval(pollTimer);
       job.status = job.cancelled ? 'cancelled' : 'error';
       job.phase = job.status;
       job.error = err.message || 'Lỗi xử lý upscale';
       job.message = job.error;
+      appendJobLog(job, `❌ ${job.error}`);
     } finally {
       job.child = null;
       await rm(framesDir, { recursive: true, force: true }).catch(() => {});

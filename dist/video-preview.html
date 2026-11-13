@@ -1425,6 +1425,9 @@
         <button id="tabUpscaleBtn" class="tab-btn" type="button">
           🚀 AI Upscale Video (1080p/4K)
         </button>
+        <button id="tabLogsBtn" class="tab-btn" type="button">
+          📜 Logs
+        </button>
       </div>
       <div class="mode-hint-pill">
         <span>💡 Mẹo: Nhấn <kbd>Ctrl + V</kbd> bất kỳ lúc nào để dán ảnh trực tiếp từ Clipboard</span>
@@ -1866,7 +1869,7 @@
         </div>
       </div>
 
-      <div class="layout" style="grid-template-columns: 380px 1fr;">
+      <div style="display: grid; grid-template-columns: 380px 1fr; gap: 16px; align-items: start;">
         <aside class="panel" style="padding: 16px; display:flex; flex-direction:column; gap:14px;">
           <div id="upscaleDropzone" class="dropzone" style="padding: 20px 14px; text-align:center; cursor:pointer; border:1px dashed rgba(0,242,254,0.35); border-radius:12px; background:rgba(15,23,42,0.55);">
             <input id="upscaleFileInput" type="file" accept="video/*" hidden>
@@ -1943,7 +1946,32 @@
               <video id="upscaleResultVideo" controls playsinline style="width:100%; flex:1; max-height:480px; border-radius:8px; background:#000;"></video>
             </div>
           </div>
+
+          <div style="margin-top:4px; background:#050811; border:1px solid var(--panel-border); border-radius:10px; padding:10px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+              <span style="font-size:0.78rem; font-weight:700; color:#94a3b8;">📜 Live Log (FFmpeg / Real-ESRGAN GPU)</span>
+              <button id="upscaleOpenLogsBtn" class="btn btn-sm btn-secondary" type="button" style="height:24px; padding:0 8px; font-size:0.72rem;">Mở tab Logs đầy đủ</button>
+            </div>
+            <pre id="upscaleLiveLogs" style="margin:0; max-height:150px; overflow-y:auto; font-family:'JetBrains Mono', monospace; font-size:0.74rem; line-height:1.45; color:#cbd5e1; white-space:pre-wrap; word-break:break-word;">Chưa có log xử lý...</pre>
+          </div>
         </section>
+      </div>
+    </div>
+
+    <!-- VIEW 4: SYSTEM LOGS -->
+    <div id="logsView" class="view-container">
+      <div class="panel" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <div>
+            <div style="font-weight:800; font-size:1rem; color:#fff;">📜 Nhật ký hoạt động hệ thống (Live Logs)</div>
+            <div style="font-size:0.78rem; color:var(--text-muted);">Theo dõi tiến trình FFmpeg, Real-ESRGAN GPU, tốc độ frame và lỗi chi tiết theo thời gian thực.</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button id="copyLogsBtn" class="btn btn-sm btn-secondary" type="button">📋 Sao chép Logs</button>
+            <button id="clearLogsBtn" class="btn btn-sm btn-secondary" type="button">🗑 Xóa Logs</button>
+          </div>
+        </div>
+        <pre id="logsTerminal" style="margin:0; min-height:460px; max-height:68vh; overflow-y:auto; background:#04070f; border:1px solid var(--panel-border); border-radius:10px; padding:14px; font-family:'JetBrains Mono', monospace; font-size:0.78rem; line-height:1.55; color:#e2e8f0; white-space:pre-wrap; word-break:break-word;">[Hệ thống] Sẵn sàng ghi nhận log...</pre>
       </div>
     </div>
   </div>

@@ -823,12 +823,16 @@ if (singleDropTarget) {
 function _m(t) {
     const tabUpscaleBtn = we("tabUpscaleBtn");
     const upscaleView = we("upscaleView");
+    const tabLogsBtn = we("tabLogsBtn");
+    const logsView = we("logsView");
     U.tabBatchBtn?.classList.toggle("active", t === "batch");
     U.tabSingleBtn?.classList.toggle("active", t === "single");
     tabUpscaleBtn?.classList.toggle("active", t === "upscale");
+    tabLogsBtn?.classList.toggle("active", t === "logs");
     U.batchView?.classList.toggle("active", t === "batch");
     U.singleView?.classList.toggle("active", t === "single");
     upscaleView?.classList.toggle("active", t === "upscale");
+    logsView?.classList.toggle("active", t === "logs");
 }
 U.concurrencySelect?.addEventListener("change", e => {
     let val = Number(e.target.value) || 2;
@@ -1577,7 +1581,59 @@ function setupVideoUpscaler() {
     const origVideo = we("upscaleOriginalVideo");
     const resVideo = we("upscaleResultVideo");
     const playPauseBtn = we("upscalePlayPauseBtn");
+    const tabLogsBtn = we("tabLogsBtn");
+    const openLogsBtn = we("upscaleOpenLogsBtn");
+    const liveLogsEl = we("upscaleLiveLogs");
+    const logsTerminal = we("logsTerminal");
+    const copyLogsBtn = we("copyLogsBtn");
+    const clearLogsBtn = we("clearLogsBtn");
     if (!tabBtn || !startBtn) return;
+
+    const appLogs = [];
+    let lastServerLogCount = 0;
+
+    function renderLogs() {
+        const text = appLogs.length ? appLogs.join('\n') : '[Hệ thống] Chưa có log...';
+        if (logsTerminal) {
+            const nearBottom = logsTerminal.scrollHeight - logsTerminal.scrollTop - logsTerminal.clientHeight < 60;
+            logsTerminal.textContent = text;
+            if (nearBottom) logsTerminal.scrollTop = logsTerminal.scrollHeight;
+        }
+        if (liveLogsEl) {
+            const recent = appLogs.slice(-40).join('\n') || 'Chưa có log xử lý...';
+            liveLogsEl.textContent = recent;
+            liveLogsEl.scrollTop = liveLogsEl.scrollHeight;
+        }
+    }
+
+    function pushLog(msg) {
+        const ts = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+        appLogs.push(`[${ts}] ${msg}`);
+        if (appLogs.length > 300) appLogs.shift();
+        renderLogs();
+    }
+
+    tabLogsBtn?.addEventListener("click", () => {
+        _m("logs");
+        renderLogs();
+    });
+    openLogsBtn?.addEventListener("click", () => {
+        _m("logs");
+        renderLogs();
+    });
+    copyLogsBtn?.addEventListener("click", async () => {
+        try {
+            await navigator.clipboard.writeText(appLogs.join('\n'));
+            showToast?.('Đã sao chép toàn bộ Logs!', 'success');
+        } catch {
+            showToast?.('Không sao chép được clipboard.', 'warning');
+        }
+    });
+    clearLogsBtn?.addEventListener("click", () => {
+        appLogs.length = 0;
+        lastServerLogCount = 0;
+        renderLogs();
+    });
 
     let selectedFile = null;
     let origUrl = null;
@@ -1743,6 +1799,8 @@ function setupVideoUpscaler() {
 
         startBtn.disabled = true;
         if (cancelBtn) cancelBtn.hidden = false;
+        lastServerLogCount = 0;
+        pushLog(`Bắt đầu upload video: ${selectedFile.name} (${LG(selectedFile.size)})`);
         setUpscaleStatus('Đang gửi video tới bộ xử lý GPU local...', 'info', 0.03);
 
         try {
@@ -1757,6 +1815,7 @@ function setupVideoUpscaler() {
             const upData = await upRes.json();
             if (!upRes.ok || !upData.jobId) throw new Error(upData.error || 'Upload thất bại');
             activeJobId = upData.jobId;
+            pushLog(`Đã upload xong. Khởi chạy job ${activeJobId}...`);
 
             const startRes = await fetch('/api/upscale/start', {
                 method: 'POST',
@@ -1775,6 +1834,19 @@ function setupVideoUpscaler() {
             pollTimer = setInterval(async () => {
                 try {
                     const st = await (await fetch(`/api/upscale/status?jobId=${encodeURIComponent(activeJobId)}`)).json();
+                    if (Array.isArray(st.logs) && st.logs.length > 0) {
+                        if (st.logs.length > lastServerLogCount) {
+                            for (let i = lastServerLogCount; i < st.logs.length; i++) {
+                                appLogs.push(st.logs[i]);
+                            }
+                            lastServerLogCount = st.logs.length;
+                        } else if (st.logs.length === lastServerLogCount && st.logs.length > 0) {
+                            // Update last line if server replaced frame=/progress line
+                            appLogs[appLogs.length - 1] = st.logs[st.logs.length - 1];
+                        }
+                        if (appLogs.length > 300) appLogs.splice(0, appLogs.length - 300);
+                        renderLogs();
+                    }
                     setUpscaleStatus(st.message || 'Đang xử lý...', st.status === 'error' ? 'error' : (st.status === 'done' ? 'success' : 'info'), st.progress || 0);
                     if (st.status === 'done') {
                         clearInterval(pollTimer);
