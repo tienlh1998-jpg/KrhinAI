@@ -4766,9 +4766,13 @@ function setupVideoUpscaler() {
             if (!startRes.ok) throw new Error(startData.error || 'Không thể khởi chạy upscale');
 
             if (pollTimer) clearInterval(pollTimer);
+            let pollFailCount = 0;
             pollTimer = setInterval(async () => {
                 try {
-                    const st = await (await fetch(`/api/upscale/status?jobId=${encodeURIComponent(activeJobId)}`)).json();
+                    const res = await fetch(`/api/upscale/status?jobId=${encodeURIComponent(activeJobId)}`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const st = await res.json();
+                    pollFailCount = 0;
                     if (Array.isArray(st.logs) && st.logs.length > 0) {
                         if (st.logs.length > lastServerLogCount) {
                             for (let i = lastServerLogCount; i < st.logs.length; i++) {
@@ -4800,7 +4804,18 @@ function setupVideoUpscaler() {
                         startBtn.disabled = false;
                         if (cancelBtn) cancelBtn.hidden = true;
                     }
-                } catch {}
+                } catch (pollErr) {
+                    pollFailCount++;
+                    if (pollFailCount >= 4) {
+                        clearInterval(pollTimer);
+                        startBtn.disabled = false;
+                        if (cancelBtn) cancelBtn.hidden = true;
+                        const errMsg = `Mất kết nối tới server cục bộ (${pollErr.message || 'server đã dừng'}). Hãy mở lại Krhin-AI.exe.`;
+                        pushLog(`❌ ${errMsg}`);
+                        setUpscaleStatus(errMsg, 'error', 0);
+                        refreshTools();
+                    }
+                }
             }, 600);
         } catch (err) {
             startBtn.disabled = false;

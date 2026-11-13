@@ -302,7 +302,7 @@ export async function startUpscaleJob(jobId, options = {}) {
 
       try {
         await runProcess(tools.ffmpegPath, [
-          '-y', '-i', job.inputPath, '-qscale:v', '1', '-qmin', '1', '-fps_mode', 'passthrough',
+          '-y', '-i', job.inputPath, '-c:v', 'png', '-compression_level', '1', '-fps_mode', 'passthrough',
           join(framesDir, 'frame_%08d.png')
         ], {
           onChild: c => { job.child = c; },
@@ -453,6 +453,14 @@ export function cancelUpscaleJob(jobId) {
     try { job.child.kill('SIGTERM'); } catch {}
   }
   return true;
+}
+
+export function hasActiveUpscaleJob() {
+  if (installState.running) return true;
+  for (const job of jobs.values()) {
+    if (job.status === 'processing') return true;
+  }
+  return false;
 }
 
 export function cleanupUpscaleJobs() {

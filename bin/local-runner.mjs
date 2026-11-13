@@ -8,7 +8,7 @@ import os from 'node:os';
 import {
   detectUpscaleTools, installUpscaleTools, getInstallState,
   createUploadJob, markUploadComplete, startUpscaleJob,
-  getJobStatus, getJobOutput, cancelUpscaleJob, cleanupUpscaleJobs
+  getJobStatus, getJobOutput, cancelUpscaleJob, cleanupUpscaleJobs, hasActiveUpscaleJob
 } from './video-upscaler.mjs';
 const rootDir = realpathSync(fileURLToPath(new URL('../dist', import.meta.url)));
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -62,11 +62,15 @@ function recordHeartbeat() {
     hasClientConnected = true;
     if (!watchdogInterval && process.env.KRHIN_NO_SHUTDOWN !== '1') {
       watchdogInterval = setInterval(() => {
-        if (hasClientConnected && Date.now() - lastHeartbeat > 8000) {
+        if (hasActiveUpscaleJob()) {
+          lastHeartbeat = Date.now();
+          return;
+        }
+        if (hasClientConnected && Date.now() - lastHeartbeat > 30000) {
           clearInterval(watchdogInterval);
           process.exit(0);
         }
-      }, 2000);
+      }, 3000);
       watchdogInterval.unref?.();
     }
   }
