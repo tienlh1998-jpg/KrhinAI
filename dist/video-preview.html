@@ -1666,18 +1666,18 @@
               <!-- Output Directory Card -->
               <div class="setting-card">
                 <div class="setting-card-title">
-                  <span>Thư mục lưu tự động</span>
+                  <span>📂 Thư mục lưu kết quả</span>
                 </div>
-                <div style="display: flex; gap: 6px;">
-                  <button id="selectOutDirBtn" class="btn btn-sm btn-secondary" style="flex: 1; justify-content: flex-start;" type="button">
-                    📁 Chọn thư mục lưu...
+                <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+                  <button id="selectOutDirBtn" class="btn btn-sm btn-secondary" style="flex: 1; justify-content: center; gap: 6px;" type="button">
+                    📁 Đặt thư mục riêng...
                   </button>
-                  <button id="clearOutDirBtn" class="btn btn-sm btn-danger" title="Huỷ chọn thư mục" type="button" style="display: none; padding: 0 8px;">✕</button>
+                  <button id="clearOutDirBtn" class="btn btn-sm btn-danger" title="Huỷ thư mục riêng, dùng mặc định Downloads" type="button" style="display: none; padding: 0 10px;">✕</button>
                 </div>
-                <button id="openFolderBtn" class="btn btn-sm" style="width: 100%; justify-content: center; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); color: #38bdf8;" type="button">
-                  Mở thư mục Tải về (Downloads)
+                <button id="openFolderBtn" class="btn btn-sm" style="width: 100%; justify-content: center; gap: 6px; background: rgba(0, 242, 254, 0.08); border-color: rgba(0, 242, 254, 0.25); color: #38bdf8;" type="button">
+                  📂 Mở thư mục Downloads trong Explorer
                 </button>
-                <span id="selectedOutDirLabel" style="font-size: 0.76rem; color: #34d399; font-family: 'JetBrains Mono', monospace; word-break: break-all; display: none;"></span>
+                <div id="selectedOutDirLabel" style="margin-top: 6px; font-size: 0.74rem; color: #34d399; font-family: 'JetBrains Mono', monospace; word-break: break-all; display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 6px; padding: 4px 8px;"></div>
               </div>
 
               <!-- Checkbox Options -->

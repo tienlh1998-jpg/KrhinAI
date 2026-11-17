@@ -39,19 +39,27 @@ export function findChromiumBrowser() {
   }
   return null;
 }
-export async function openTarget(target) {
-  const browser = findChromiumBrowser();
-  if (browser) {
-    return launch(browser, [
-      `--app=${target}`,
-      '--window-size=1440,900'
-    ]);
-  }
+export function openFolder(folderPath) {
   if (process.platform === 'win32') {
-    if (target.startsWith('http://127.0.0.1:')) return launch('rundll32.exe', ['url.dll,FileProtocolHandler', target]);
-    return launch('explorer.exe', [target]);
+    return launch('explorer.exe', [folderPath]);
   }
-  return launch(process.platform === 'darwin' ? 'open' : 'xdg-open', [target]);
+  return launch(process.platform === 'darwin' ? 'open' : 'xdg-open', [folderPath]);
+}
+export async function openTarget(target) {
+  if (typeof target === 'string' && (target.startsWith('http://') || target.startsWith('https://'))) {
+    const browser = findChromiumBrowser();
+    if (browser) {
+      return launch(browser, [
+        `--app=${target}`,
+        '--window-size=1440,900'
+      ]);
+    }
+    if (process.platform === 'win32') {
+      return launch('rundll32.exe', ['url.dll,FileProtocolHandler', target]);
+    }
+    return launch(process.platform === 'darwin' ? 'open' : 'xdg-open', [target]);
+  }
+  return openFolder(target);
 }
 let lastHeartbeat = Date.now();
 let hasClientConnected = false;
@@ -92,7 +100,7 @@ function readJsonBody(req) {
   });
 }
 
-export function createAppServer({ open = openTarget } = {}) {
+export function createAppServer({ open = openFolder } = {}) {
   return createServer(async (req, res) => {
     const port = req.socket.localPort;
     const origin = `http://127.0.0.1:${port}`;

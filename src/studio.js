@@ -553,25 +553,36 @@ async function jG(blob, name) {
     return saveChain;
 }
 U.selectOutDirBtn?.addEventListener('click', async () => {
-    if (!window.showDirectoryPicker) { wr('Chọn thư mục cần Chrome hoặc Edge. Bạn vẫn có thể tải file bằng trình duyệt.', 'warn'); return; }
+    if (!window.showDirectoryPicker) {
+        wr('Chọn thư mục cần Chrome hoặc Edge. Bạn vẫn có thể tải file bằng trình duyệt.', 'warn');
+        showToast?.('Trình duyệt không hỗ trợ chọn thư mục trực tiếp.', 'warning');
+        return;
+    }
     try {
         _m_dirHandle = await window.showDirectoryPicker({ mode: 'readwrite', id: 'krhin-output' });
-        U.selectedOutDirLabel.textContent = 'Lưu vào: ' + _m_dirHandle.name;
+        U.selectedOutDirLabel.textContent = '✓ Đang lưu vào thư mục: ' + _m_dirHandle.name;
         U.selectedOutDirLabel.style.display = 'block';
         U.clearOutDirBtn.style.display = 'block';
         U.autoDownloadCheck.checked = true;
-    } catch (error) { if (error.name !== 'AbortError') wr('Không chọn được thư mục: ' + error.message, 'warn'); }
+        wr('Đã chọn thư mục: ' + _m_dirHandle.name, 'success');
+        showToast?.('Đã đặt thư mục lưu: ' + _m_dirHandle.name, 'success');
+    } catch (error) {
+        if (error.name !== 'AbortError') wr('Không chọn được thư mục: ' + error.message, 'warn');
+    }
 });
 U.clearOutDirBtn?.addEventListener('click', () => {
     _m_dirHandle = null;
     U.selectedOutDirLabel.style.display = 'none';
     U.clearOutDirBtn.style.display = 'none';
+    wr('Đã chuyển về tải tự động vào Downloads', 'info');
+    showToast?.('Đã chuyển về tải tự động vào Downloads', 'info');
 });
 U.openFolderBtn?.addEventListener('click', async () => {
     try {
         const response = await fetch('/api/open-downloads', { method: 'POST', headers: { 'X-Krhin-Request': '1' } });
-        if (!response.ok) throw new Error('Không mở được Downloads');
-        wr('Đã mở Downloads. Nếu chọn thư mục lưu riêng, hãy mở thư mục đó trong trình quản lý file.', 'info');
+        if (!response.ok) throw new Error('Không mở được thư mục');
+        wr('Đã mở thư mục Downloads trong File Explorer.', 'info');
+        showToast?.('Đã mở thư mục Downloads trong File Explorer', 'info');
     } catch (error) { wr(error.message, 'warn'); }
 });
 function sd() {
