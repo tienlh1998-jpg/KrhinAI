@@ -3596,7 +3596,7 @@ async function inspectTask(task) {
             U.processedVideo && (U.processedVideo.src = _e.processedUrl, U.processedVideo.style.display = "block");
             U.processedImg && (U.processedImg.style.display = "none");
         }
-        U.processedEmpty && (U.processedEmpty.hidden = true);
+        U.processedEmpty && (U.processedEmpty.hidden = true, U.processedEmpty.style.display = "none", U.processedEmpty.classList.add("is-hidden"));
         U.afterBadge && (U.afterBadge.hidden = false);
         U.downloadBtn && U.downloadBtn.removeAttribute("aria-disabled");
         U.downloadBtn && (U.downloadBtn.href = _e.processedUrl);
@@ -3608,6 +3608,8 @@ async function inspectTask(task) {
         if (U.processedVideo) { U.processedVideo.src = ""; U.processedVideo.style.display = "none"; }
         if (U.processedEmpty) {
             U.processedEmpty.hidden = false;
+            U.processedEmpty.style.display = "grid";
+            U.processedEmpty.classList.remove("is-hidden");
             U.processedEmpty.innerHTML = `<div><strong>${escapeHtml(task.name)}</strong> (Chưa xoá watermark)<br><span style="font-size:0.8rem; opacity:0.8;">Bấm <b>⚡ Xử lý Ngay (AI Clean)</b> để xoá watermark cho file này</span></div>`;
         }
         if (U.afterBadge) U.afterBadge.hidden = true;
@@ -3909,8 +3911,8 @@ async function v_(t) {
         U.originalVideo.src = _e.originalUrl;
         U.processedVideo.src = "";
     }
-    U.originalEmpty.hidden = true;
-    U.processedEmpty.hidden = false;
+    U.originalEmpty && (U.originalEmpty.hidden = true, U.originalEmpty.style.display = "none", U.originalEmpty.classList.add("is-hidden"));
+    U.processedEmpty && (U.processedEmpty.hidden = false, U.processedEmpty.style.display = "grid", U.processedEmpty.classList.remove("is-hidden"));
     U.afterBadge.hidden = true;
     U.downloadBtn.setAttribute("aria-disabled", "true");
     U.downloadBtn.removeAttribute("href");
@@ -4107,7 +4109,7 @@ U.processBtn?.addEventListener("click", async () => {
                 U.processedVideo.style.display = "block";
                 U.processedImg && (U.processedImg.style.display = "none");
             }
-            U.processedEmpty.hidden = true;
+            U.processedEmpty && (U.processedEmpty.hidden = true, U.processedEmpty.style.display = "none", U.processedEmpty.classList.add("is-hidden"));
             U.afterBadge.hidden = false;
             if (typeof updateSplitPos === 'function') updateSplitPos(_splitPos);
             showToast('✓ Đã xử lý & xoá watermark thành công!', 'success');
@@ -4156,8 +4158,8 @@ U.resetBtn?.addEventListener("click", () => {
     U.processedVideo.src = "";
     U.originalImg && (U.originalImg.src = "", U.originalImg.style.display = "none");
     U.processedImg && (U.processedImg.src = "", U.processedImg.style.display = "none");
-    U.originalEmpty.hidden = false;
-    U.processedEmpty.hidden = false;
+    U.originalEmpty && (U.originalEmpty.hidden = false, U.originalEmpty.style.display = "grid", U.originalEmpty.classList.remove("is-hidden"));
+    U.processedEmpty && (U.processedEmpty.hidden = false, U.processedEmpty.style.display = "grid", U.processedEmpty.classList.remove("is-hidden"));
     U.afterBadge.hidden = true;
     k_(null);
     S_(null);

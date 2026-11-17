@@ -57,6 +57,10 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
+    [hidden] {
+      display: none !important;
+    }
+    
     body {
       min-height: 100vh;
       background: 
@@ -1122,6 +1126,10 @@
       padding: 16px;
       z-index: 4;
       background: rgba(6, 9, 19, 0.95);
+    }
+    .empty[hidden],
+    .empty.is-hidden {
+      display: none !important;
     }
 
     .compare-controls {
